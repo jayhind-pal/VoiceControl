@@ -1,7 +1,7 @@
 {
-  "name": "freela-api",
+  "name": "social-star",
   "version": "1.0.0",
-  "description": "APIs for freela",
+  "description": "APIs for social-star",
   "main": "server.js",
   "scripts": {
     "dev": "nodemon server.js",
@@ -9,14 +9,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/jayhindP/freela-api.git"
+    "url": "git+https://roshanparmar6778@bitbucket.org/roshanparmar6778/nodejs-api.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/jayhindP/freela-api/issues"
+    "url": "https://roshanparmar6778@bitbucket.org/roshanparmar6778/nodejs-api/issues"
   },
-  "homepage": "https://github.com/jayhindP/freela-api#readme",
+  "homepage": "https://roshanparmar6778@bitbucket.org/roshanparmar6778/nodejs-api#readme",
   "dependencies": {
     "bcrypt": "^5.0.1",
     "body-parser": "^1.19.2",

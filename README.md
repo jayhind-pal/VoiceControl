@@ -1,6 +1,6 @@
-# Project Title
+# Social Star
 
-A nice project with a nice description
+Provide a way to improve social media subscribers, viewers etc. 
 
 ---
 ## Requirements
