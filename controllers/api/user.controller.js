@@ -136,7 +136,7 @@ exports.update = async (req, res) => {
   }
       
   User.updateById(
-    req.body.id,
+    req.user.id,
     new User(updatedUser),
     (err, data) => {
       if (err) {
@@ -157,20 +157,20 @@ exports.update = async (req, res) => {
 };
 exports.changePassword = async (req, res) => {
     // Validate Request
-    if (!req.body.id || !req.body.old_password || !req.body.password || !req.body.confirm_password) {
+    if (!req.user.id || !req.body.old_password || !req.body.new_password || !req.body.confirm_password) {
         res.status(400).send({
           message: trans.lang('message.required')
         });
     }
   
     let updatedUser = req.body;
-    if(updatedUser.password !== updatedUser.confirm_password)
+    if(updatedUser.new_password !== updatedUser.confirm_password)
     {
         res.status(404).send({
           message: trans.lang('message.user.confirm_password_not_matched')
         });
     }else{
-        User.findById(updatedUser.id, async (err, data) => {
+        User.findById(req.user.id, async (err, data) => {
             if (err) {
               if (err.kind === "not_found") {
                 res.status(404).send({
@@ -183,15 +183,15 @@ exports.changePassword = async (req, res) => {
                 });
               }
             } else {
-                let encOldPassword = await bcrypt.hash(req.body.old_password, 10);
-                if(data.password !== encOldPassword){
+                let oldPasswordMatched = await bcrypt.compare(req.body.old_password, data.password);
+                if(!oldPasswordMatched){
                     res.status(404).send({
                       message: trans.lang('message.user.old_password_not_matched')
                     });
                 }else{
-                    let encPassword = await bcrypt.hash(req.body.old_password, 10);
+                    let encPassword = await bcrypt.hash(req.body.new_password, 10);
                     User.updateById(
-                        req.body.id,
+                        req.user.id,
                         new User({password: encPassword}),
                         (err, data) => {
                           if (err) {

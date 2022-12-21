@@ -30,7 +30,7 @@ module.exports = app => {
     router.post("/user/create", users_controller.create);
     router.post("/user/resend-verification-email", users_controller.resendVerificationMail);
     router.get("/verify-email", users_controller.verifyEmail);
-    router.get("/get-profile", auth, users_controller.getProfile);
+    router.get("/user/profile", auth, users_controller.getProfile);
     router.get("/users", auth, users_controller.findAll);
     router.post("/user/update", [auth, userUpload.single('user_image')], users_controller.update);
     router.post("/user/change-password", auth, users_controller.changePassword);

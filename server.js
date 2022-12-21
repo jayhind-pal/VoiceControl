@@ -9,6 +9,7 @@ const PORT = process.env.PORT;
 //global
 global.appname = "Social Star";
 global.base_url = `https://5exceptions.com:${PORT}/`;
+global.web_url = '';//used to redirect on front-end like email verification
 global.files_url = base_url + "files/";
 global.__lang_path = __dirname + "/" + 'language/';
 global.trans = require('./helpers/LanguageHelper');

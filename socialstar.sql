@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 21, 2022 at 07:48 AM
+-- Generation Time: Dec 21, 2022 at 01:08 PM
 -- Server version: 10.4.22-MariaDB
 -- PHP Version: 7.4.26
 
@@ -75,7 +75,8 @@ INSERT INTO `email_verification` (`id`, `user_id`, `email`, `entrydt`) VALUES
 (16, 14, 'rahul@yopmail.com', '2022-04-15 18:01:08'),
 (18, 3, 'test2@gmail.com', '2022-12-19 12:22:46'),
 (19, 4, 'publicserver95@gmail.com', '2022-12-19 12:23:56'),
-(20, 1, 'publicserver95@gmail.com', '2022-12-19 12:25:16');
+(20, 1, 'publicserver95@gmail.com', '2022-12-19 12:25:16'),
+(21, 2, 'test11@gmail.com', '2022-12-21 11:54:23');
 
 -- --------------------------------------------------------
 
@@ -91,6 +92,7 @@ CREATE TABLE `users` (
   `email` text DEFAULT NULL,
   `password` text DEFAULT NULL,
   `address` text DEFAULT NULL,
+  `gender` enum('Male','Female','Other') NOT NULL DEFAULT 'Other',
   `user_image` varchar(100) NOT NULL DEFAULT 'public/company/no-image.png',
   `bank_name` text DEFAULT NULL,
   `branch_name` text DEFAULT NULL,
@@ -112,8 +114,9 @@ CREATE TABLE `users` (
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `type`, `name`, `mobile`, `email`, `password`, `address`, `user_image`, `bank_name`, `branch_name`, `ifsc_code`, `account_no`, `account_holder_name`, `social_id`, `social_type`, `category_id`, `lat`, `lng`, `wallet`, `email_verified`, `status`, `entrydt`) VALUES
-(1, 'user', 'test', NULL, 'publicserver95@gmail.com', '$2b$10$vZfO5mN27Z6ghq1l6C7J6OMNVqtui2pn7TsYnS9DuTHdI4G60ck0a', NULL, 'public/company/no-image.png', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 1, '2022-12-19 12:25:16');
+INSERT INTO `users` (`id`, `type`, `name`, `mobile`, `email`, `password`, `address`, `gender`, `user_image`, `bank_name`, `branch_name`, `ifsc_code`, `account_no`, `account_holder_name`, `social_id`, `social_type`, `category_id`, `lat`, `lng`, `wallet`, `email_verified`, `status`, `entrydt`) VALUES
+(1, 'user', 'Test', '+911234567890', 'test@gmail.com', '$2b$10$Ka9fx9oiXriykNuyjzgi8OSRQoPRfn1q1QgZnLBN9Q6grW3hwGgXS', 'Indore', 'Male', 'public\\users\\1671623882265-69875452.jpg', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 1, '2022-12-21 12:05:28'),
+(2, 'user', '12345', NULL, 'test11@gmail.com', '$2b$10$GjW1Ff4La2KmowqVFGCteegrkzIH5MDdPN4jWdfZ8miX0ucsBWWYS', NULL, 'Other', 'public/company/no-image.png', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 1, '2022-12-21 11:54:23');
 
 --
 -- Indexes for dumped tables
@@ -151,13 +154,13 @@ ALTER TABLE `category`
 -- AUTO_INCREMENT for table `email_verification`
 --
 ALTER TABLE `email_verification`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
