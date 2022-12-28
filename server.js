@@ -29,7 +29,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 
 //files url
 app.use(express.static('public')); 
-app.use('/files/public', express.static('public'));
+app.use('/public', express.static('public'));
 
 // simple route
 app.get("/", (req, res) => {

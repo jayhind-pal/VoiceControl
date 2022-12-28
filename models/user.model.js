@@ -15,13 +15,58 @@ User.login = (email, result) => {
         return;
       }
       if (res.length) {
-        result(null, res[0]);
+        let user = res[0];
+
+        // Create token
+        const token = jwt.sign(
+          { id: user.id, email: user.email },
+          process.env.TOKEN_KEY,
+          {
+            expiresIn: "2h",
+          }
+        );
+
+        // save user token
+        user.token = token;
+        
+        result(null, user);
         return;
       }
       // not found User with the id
       result({ kind: "not_found" }, null);
     });
 };
+
+User.findBySocialId = (social_id, result) => {
+  sql.query(`SELECT * FROM users WHERE status=1 AND social_id = '${social_id}'`, (err, res) => {
+    if (err) {
+      result(err, null);
+      return;
+    }
+    if (res.length) {
+      let user = res[0];
+
+      // Create token
+      const token = jwt.sign(
+        { id: user.id, email: user.email },
+        process.env.TOKEN_KEY,
+        {
+          expiresIn: "2h",
+        }
+      );
+
+      // save user token
+      user.token = token;
+
+      result(null, user);
+      return;
+    }
+    
+    // not found User with the id
+    result({ kind: "not_found" }, null);
+  });
+};
+
 User.findByEmail = (email, result) => {
     sql.query(`SELECT * FROM users WHERE email = '${email}'`, (err, res) => {
       if (err) {

@@ -23,19 +23,6 @@ exports.login = async (req, res) => {
         } else {
             let passwordMatched = await bcrypt.compare(req.body.password, data.password);
             if (data && passwordMatched) {
-                // Create token
-                const token = jwt.sign(
-                  { id: data.id, email: data.email },
-                  process.env.TOKEN_KEY,
-                  {
-                    expiresIn: "2h",
-                  }
-                );
-          
-                // save user token
-                data.token = token;
-          
-                // user
                 res.status(200).json(data);
             }else{
                 res.status(404).send({
@@ -45,6 +32,43 @@ exports.login = async (req, res) => {
         }
     });
 };
+
+exports.socialLogin = async (req, res) => {
+  User.findBySocialId(req.body.social_id, async (err, data) => {
+      if (err) {
+        if (err.kind === "not_found") {
+          // Create a User
+          const newRecord = new User({
+              name: req.body.name,
+              email: req.body.email,
+              social_id: req.body.social_id,
+              social_type: req.body.social_type,
+          });
+      
+          // Save User in the database
+          User.create(newRecord, async (err, newUser) => {
+              if (err){
+                res.status(500).send({
+                  error: err,
+                  message:
+                    err.message || trans.lang('message.something_went_wrong')
+                });
+              }else{
+                  res.send(newUser);
+              } 
+          });
+        } else {
+          res.status(500).send({
+            error: err,
+            message: trans.lang('message.something_went_wrong')
+          });
+        }
+      } else {
+          res.status(200).json(data);
+      }
+  });
+};
+
 
 exports.findAll = (req, res) => {
     const type = req.query.type;

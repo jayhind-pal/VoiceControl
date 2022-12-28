@@ -27,6 +27,7 @@ module.exports = app => {
     //users
     const users_controller = require("../controllers/api/user.controller.js");
     router.post("/login", users_controller.login);
+    router.post("/social/login", users_controller.socialLogin);
     router.post("/user/create", users_controller.create);
     router.post("/user/resend-verification-email", users_controller.resendVerificationMail);
     router.get("/verify-email", users_controller.verifyEmail);
