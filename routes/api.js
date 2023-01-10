@@ -55,7 +55,7 @@ module.exports = app => {
 
     //task
     const task_controller = require("../controllers/api/task.controller.js");
-    router.post("/task/create", [auth, taskUpload.single('task_attachment')], task_controller.update);
+    router.post("/task/create", [auth, taskUpload.single('task_attachment')], task_controller.create);
     router.post("/task/update", [auth, taskUpload.single('task_attachment')], task_controller.update);
     router.get("/tasks", auth, task_controller.findAll);
     
