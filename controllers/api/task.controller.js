@@ -18,8 +18,15 @@ exports.create = (req, res) => {
     amount: req.body.amount,
     task_url: req.body.task_url,
     description: req.body.description,
+    start_date: req.body.start_date,
+    end_date: req.body.end_date,
     expiry: req.body.expiry,
   });
+
+  if(req.file){
+    newRecord.task_attachment = req.file.path;
+  }
+
   // Save task in the database
   Task.create(newRecord, (err, data) => {
     if (err)
@@ -75,6 +82,11 @@ exports.update = (req, res) => {
   }
 
   let updatedtask = req.body;
+
+  if(req.file){
+    updatedtask.task_attachment = req.file.path;
+  }
+
   Task.updateById(
     req.body.id,
     new task(updatedtask),

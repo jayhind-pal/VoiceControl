@@ -5,7 +5,8 @@ module.exports = app => {
     const auth = require("../middleware/auth");
     var multer  = require('multer');
 
-    var userUpload = multer({ storage: multer.diskStorage({
+    var userUpload = multer({ 
+        storage: multer.diskStorage({
             destination: function (req, file, cb) {
                cb(null, 'public/users');
             },
@@ -14,6 +15,18 @@ module.exports = app => {
             }
         })
     });
+
+    var taskUpload = multer({ 
+        storage: multer.diskStorage({
+            destination: function (req, file, cb) {
+                cb(null, 'public/tasks');
+            },
+            filename: function (req, file, cb) {
+                cb(null, Date.now() + '-' + file.originalname);
+            }
+        })
+    });
+
     
 
     //users
@@ -42,8 +55,8 @@ module.exports = app => {
 
     //task
     const task_controller = require("../controllers/api/task.controller.js");
-    router.post("/task/create", task_controller.create);
-    router.post("/task/update", task_controller.update);
+    router.post("/task/create", [auth, taskUpload.single('task_attachment')], task_controller.update);
+    router.post("/task/update", [auth, taskUpload.single('task_attachment')], task_controller.update);
     router.get("/tasks", auth, task_controller.findAll);
     
     app.use('/api/', router);

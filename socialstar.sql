@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 10, 2023 at 08:02 AM
+-- Generation Time: Jan 10, 2023 at 08:38 AM
 -- Server version: 10.4.22-MariaDB
 -- PHP Version: 7.4.26
 
@@ -30,6 +30,7 @@ SET time_zone = "+00:00";
 CREATE TABLE `category` (
   `id` int(11) NOT NULL,
   `category_name` text NOT NULL,
+  `seo_code` text NOT NULL,
   `description` text DEFAULT NULL,
   `category_image` text NOT NULL,
   `status` int(1) NOT NULL DEFAULT 1,
@@ -40,13 +41,13 @@ CREATE TABLE `category` (
 -- Dumping data for table `category`
 --
 
-INSERT INTO `category` (`id`, `category_name`, `description`, `category_image`, `status`, `entrydt`) VALUES
-(1, 'Improve Subscribers on Youtube', 'Improve Subscribers on Youtube', 'public/category/1648994744266-download.jpg', 1, '2023-01-10 06:23:15'),
-(2, 'Improve Views on Youtube', 'Web design, graphics, video editing, logos and more.Improve Views on Youtube', 'public/category/1648994756230-download.jpg', 1, '2023-01-10 06:23:18'),
-(3, 'Improve Followers on Instagram', 'Copywriters, SEO writers, translators and proofreaders.Improve Followers on Instagram', 'public/category/1648994763165-download.jpg', 1, '2023-01-10 06:23:20'),
-(4, 'Viral Instagram Posts', 'Viral Instagram Posts', 'public/category/1648994770391-download.jpg', 1, '2023-01-10 06:23:24'),
-(5, 'Improve Shares On Youtube', 'Improve Shares On Youtube', '', 1, '2023-01-10 06:23:28'),
-(6, 'Improve Shares On Facebook', 'Improve Shares On Facebook', '', 1, '2023-01-10 06:23:31');
+INSERT INTO `category` (`id`, `category_name`, `seo_code`, `description`, `category_image`, `status`, `entrydt`) VALUES
+(1, 'Improve Subscribers on Youtube', 'Improve-Subscribers-on-Youtube', 'Improve Subscribers on Youtube', 'public/category/1648994744266-download.jpg', 1, '2023-01-10 07:24:27'),
+(2, 'Improve Views on Youtube', 'Improve-Views-on-Youtube', 'Web design, graphics, video editing, logos and more.Improve Views on Youtube', 'public/category/1648994756230-download.jpg', 1, '2023-01-10 07:24:37'),
+(3, 'Improve Followers on Instagram', 'Improve-Followers-on-Instagram', 'Copywriters, SEO writers, translators and proofreaders.Improve Followers on Instagram', 'public/category/1648994763165-download.jpg', 1, '2023-01-10 07:24:50'),
+(4, 'Viral Instagram Posts', 'Viral-Instagram-Posts', 'Viral Instagram Posts', 'public/category/1648994770391-download.jpg', 1, '2023-01-10 07:29:24'),
+(5, 'Improve Shares On Youtube', 'Improve-Shares-On-Youtube', 'Improve Shares On Youtube', '', 1, '2023-01-10 07:25:08'),
+(6, 'Improve Shares On Facebook', 'Improve-Shares-On-Facebook', 'Improve Shares On Facebook', '', 1, '2023-01-10 07:25:16');
 
 -- --------------------------------------------------------
 
@@ -96,6 +97,13 @@ CREATE TABLE `plan` (
   `entrydt` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `plan`
+--
+
+INSERT INTO `plan` (`id`, `category_id`, `plan_name`, `description`, `price`, `validity`, `status`, `entrydt`) VALUES
+(1, 1, '100 Subscribers', 'Improve Subscribers on Youtube', 100, 30, 1, '2023-01-10 07:14:02');
+
 -- --------------------------------------------------------
 
 --
@@ -109,8 +117,11 @@ CREATE TABLE `task` (
   `plan_id` int(11) NOT NULL,
   `amount` float NOT NULL,
   `task_url` text NOT NULL,
+  `task_attachment` text NOT NULL,
   `description` text NOT NULL,
   `attender_id` int(11) NOT NULL,
+  `start_date` date NOT NULL,
+  `end_date` date NOT NULL,
   `expiry` datetime NOT NULL,
   `entrydt` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -211,7 +222,7 @@ ALTER TABLE `email_verification`
 -- AUTO_INCREMENT for table `plan`
 --
 ALTER TABLE `plan`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `task`
