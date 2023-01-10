@@ -33,10 +33,10 @@ Category.findById = (id, result) => {
     result({ kind: "not_found" }, null);
   });
 };
-Category.getAll = (category_name, result) => {
+Category.getAll = (seo_code, result) => {
   let query = "SELECT * FROM category";
-  if (category_name) {
-    query += ` WHERE category_name LIKE '%${category_name}%'`;
+  if (seo_code) {
+    query += ` WHERE seo_code = '${seo_code}'`;
   }
   sql.query(query, (err, res) => {
     if (err) {

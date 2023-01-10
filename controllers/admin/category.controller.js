@@ -30,8 +30,8 @@ exports.create = (req, res) => {
 
 // Retrieve all category from the database (with condition).
 exports.findAll = (req, res) => {
-    const name = req.query.name;
-    Category.getAll(name, (err, data) => {
+    const seo_code = req.query.seo_code;
+    Category.getAll(seo_code, (err, data) => {
       if (err)
         res.status(500).send({
           error: err,
