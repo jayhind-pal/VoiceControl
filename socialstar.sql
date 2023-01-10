@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 21, 2022 at 01:08 PM
+-- Generation Time: Jan 10, 2023 at 08:02 AM
 -- Server version: 10.4.22-MariaDB
 -- PHP Version: 7.4.26
 
@@ -41,12 +41,12 @@ CREATE TABLE `category` (
 --
 
 INSERT INTO `category` (`id`, `category_name`, `description`, `category_image`, `status`, `entrydt`) VALUES
-(1, 'IT & Programming', 'Website development, e-commerce and mobile apps.', 'public/category/1648994744266-download.jpg', 1, '2022-04-13 04:23:51'),
-(2, 'Design & Multimedia', 'Web design, graphics, video editing, logos and more.', 'public/category/1648994756230-download.jpg', 1, '2022-04-13 04:23:59'),
-(3, 'Writing & Translation', 'Copywriters, SEO writers, translators and proofreaders.', 'public/category/1648994763165-download.jpg', 1, '2022-04-13 04:24:32'),
-(4, 'Admin Support', 'Legal', 'public/category/1648994770391-download.jpg', 1, '2022-04-13 04:24:12'),
-(5, 'Sales & Marketing', 'Online advertising, social media, SEO, email marketing.', '', 1, '2022-04-13 04:25:00'),
-(6, 'Finance & Management', 'Engineering & Manufacturing', '', 1, '2022-04-13 04:25:00');
+(1, 'Improve Subscribers on Youtube', 'Improve Subscribers on Youtube', 'public/category/1648994744266-download.jpg', 1, '2023-01-10 06:23:15'),
+(2, 'Improve Views on Youtube', 'Web design, graphics, video editing, logos and more.Improve Views on Youtube', 'public/category/1648994756230-download.jpg', 1, '2023-01-10 06:23:18'),
+(3, 'Improve Followers on Instagram', 'Copywriters, SEO writers, translators and proofreaders.Improve Followers on Instagram', 'public/category/1648994763165-download.jpg', 1, '2023-01-10 06:23:20'),
+(4, 'Viral Instagram Posts', 'Viral Instagram Posts', 'public/category/1648994770391-download.jpg', 1, '2023-01-10 06:23:24'),
+(5, 'Improve Shares On Youtube', 'Improve Shares On Youtube', '', 1, '2023-01-10 06:23:28'),
+(6, 'Improve Shares On Facebook', 'Improve Shares On Facebook', '', 1, '2023-01-10 06:23:31');
 
 -- --------------------------------------------------------
 
@@ -76,7 +76,44 @@ INSERT INTO `email_verification` (`id`, `user_id`, `email`, `entrydt`) VALUES
 (18, 3, 'test2@gmail.com', '2022-12-19 12:22:46'),
 (19, 4, 'publicserver95@gmail.com', '2022-12-19 12:23:56'),
 (20, 1, 'publicserver95@gmail.com', '2022-12-19 12:25:16'),
-(21, 2, 'test11@gmail.com', '2022-12-21 11:54:23');
+(21, 2, 'test11@gmail.com', '2022-12-21 11:54:23'),
+(22, 3, 'test11@gmail.com', '2022-12-28 09:29:34');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `plan`
+--
+
+CREATE TABLE `plan` (
+  `id` int(11) NOT NULL,
+  `category_id` int(11) NOT NULL,
+  `plan_name` text NOT NULL,
+  `description` text NOT NULL,
+  `price` float NOT NULL,
+  `validity` int(11) NOT NULL COMMENT 'in days',
+  `status` int(11) NOT NULL DEFAULT 1,
+  `entrydt` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `task`
+--
+
+CREATE TABLE `task` (
+  `id` int(11) NOT NULL,
+  `star_id` int(11) NOT NULL,
+  `category_id` int(11) NOT NULL,
+  `plan_id` int(11) NOT NULL,
+  `amount` float NOT NULL,
+  `task_url` text NOT NULL,
+  `description` text NOT NULL,
+  `attender_id` int(11) NOT NULL,
+  `expiry` datetime NOT NULL,
+  `entrydt` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -116,7 +153,9 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`id`, `type`, `name`, `mobile`, `email`, `password`, `address`, `gender`, `user_image`, `bank_name`, `branch_name`, `ifsc_code`, `account_no`, `account_holder_name`, `social_id`, `social_type`, `category_id`, `lat`, `lng`, `wallet`, `email_verified`, `status`, `entrydt`) VALUES
 (1, 'user', 'Test', '+911234567890', 'test@gmail.com', '$2b$10$Ka9fx9oiXriykNuyjzgi8OSRQoPRfn1q1QgZnLBN9Q6grW3hwGgXS', 'Indore', 'Male', 'public\\users\\1671623882265-69875452.jpg', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 1, '2022-12-21 12:05:28'),
-(2, 'user', '12345', NULL, 'test11@gmail.com', '$2b$10$GjW1Ff4La2KmowqVFGCteegrkzIH5MDdPN4jWdfZ8miX0ucsBWWYS', NULL, 'Other', 'public/company/no-image.png', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 1, '2022-12-21 11:54:23');
+(2, 'user', 'Test', '+911234567890', 'test@gmail.com', '$2b$10$GjW1Ff4La2KmowqVFGCteegrkzIH5MDdPN4jWdfZ8miX0ucsBWWYS', 'Indore', 'Male', 'public\\users\\1672218744375-69875452.jpg', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 1, '2022-12-28 09:12:24'),
+(3, 'user', 'test', NULL, 'test11@gmail.com', '$2b$10$2Q40HBzgKFN1r9eo01MZY.9V2lPdAzI5yJI7pFs9z1MLh97O0324e', NULL, 'Other', 'public/company/no-image.png', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 1, '2022-12-28 09:29:33'),
+(4, 'user', 'test', NULL, 'test11@gmail.com', NULL, NULL, 'Other', 'public/company/no-image.png', NULL, NULL, NULL, NULL, NULL, 'facebook_id', 'facebook', NULL, NULL, NULL, 0, 0, 1, '2022-12-28 09:32:07');
 
 --
 -- Indexes for dumped tables
@@ -132,6 +171,18 @@ ALTER TABLE `category`
 -- Indexes for table `email_verification`
 --
 ALTER TABLE `email_verification`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `plan`
+--
+ALTER TABLE `plan`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `task`
+--
+ALTER TABLE `task`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -154,13 +205,25 @@ ALTER TABLE `category`
 -- AUTO_INCREMENT for table `email_verification`
 --
 ALTER TABLE `email_verification`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+
+--
+-- AUTO_INCREMENT for table `plan`
+--
+ALTER TABLE `plan`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `task`
+--
+ALTER TABLE `task`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

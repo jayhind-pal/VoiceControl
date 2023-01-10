@@ -4,18 +4,10 @@ module.exports = app => {
     var router = require("express").Router();
     const auth = require("../middleware/auth");
     var multer  = require('multer');
+
     var userUpload = multer({ storage: multer.diskStorage({
             destination: function (req, file, cb) {
                cb(null, 'public/users');
-            },
-            filename: function (req, file, cb) {
-               cb(null, Date.now() + '-' + file.originalname);
-            }
-        })
-    });
-    var postUpload = multer({ storage: multer.diskStorage({
-            destination: function (req, file, cb) {
-               cb(null, 'public/posts');
             },
             filename: function (req, file, cb) {
                cb(null, Date.now() + '-' + file.originalname);
@@ -43,14 +35,16 @@ module.exports = app => {
     //category
     const category_controller = require("../controllers/admin/category.controller.js");
     router.get("/categories", auth, category_controller.findAll);
-    
-    
-    //projects: portfolio
-    const project_controller = require("../controllers/api/project.controller.js");
-    router.get("/user/projects", auth, project_controller.findAll);
-    router.post("/user/project/create", auth, project_controller.create);
-    router.post("/user/project/update", auth, project_controller.update);
-    router.post("/user/project/delete", auth, project_controller.delete);
+
+    //plan
+    const plan_controller = require("../controllers/admin/plan.controller.js");
+    router.get("/plans", auth, plan_controller.findAll);
+
+    //task
+    const task_controller = require("../controllers/api/task.controller.js");
+    router.post("/task/create", task_controller.create);
+    router.post("/task/update", task_controller.update);
+    router.get("/tasks", auth, task_controller.findAll);
     
     app.use('/api/', router);
 };
