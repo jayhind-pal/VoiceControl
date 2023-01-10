@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 10, 2023 at 08:38 AM
+-- Generation Time: Jan 10, 2023 at 08:48 AM
 -- Server version: 10.4.22-MariaDB
 -- PHP Version: 7.4.26
 
@@ -33,6 +33,7 @@ CREATE TABLE `category` (
   `seo_code` text NOT NULL,
   `description` text DEFAULT NULL,
   `category_image` text NOT NULL,
+  `help_tips` text NOT NULL,
   `status` int(1) NOT NULL DEFAULT 1,
   `entrydt` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
@@ -41,13 +42,13 @@ CREATE TABLE `category` (
 -- Dumping data for table `category`
 --
 
-INSERT INTO `category` (`id`, `category_name`, `seo_code`, `description`, `category_image`, `status`, `entrydt`) VALUES
-(1, 'Improve Subscribers on Youtube', 'Improve-Subscribers-on-Youtube', 'Improve Subscribers on Youtube', 'public/category/1648994744266-download.jpg', 1, '2023-01-10 07:24:27'),
-(2, 'Improve Views on Youtube', 'Improve-Views-on-Youtube', 'Web design, graphics, video editing, logos and more.Improve Views on Youtube', 'public/category/1648994756230-download.jpg', 1, '2023-01-10 07:24:37'),
-(3, 'Improve Followers on Instagram', 'Improve-Followers-on-Instagram', 'Copywriters, SEO writers, translators and proofreaders.Improve Followers on Instagram', 'public/category/1648994763165-download.jpg', 1, '2023-01-10 07:24:50'),
-(4, 'Viral Instagram Posts', 'Viral-Instagram-Posts', 'Viral Instagram Posts', 'public/category/1648994770391-download.jpg', 1, '2023-01-10 07:29:24'),
-(5, 'Improve Shares On Youtube', 'Improve-Shares-On-Youtube', 'Improve Shares On Youtube', '', 1, '2023-01-10 07:25:08'),
-(6, 'Improve Shares On Facebook', 'Improve-Shares-On-Facebook', 'Improve Shares On Facebook', '', 1, '2023-01-10 07:25:16');
+INSERT INTO `category` (`id`, `category_name`, `seo_code`, `description`, `category_image`, `help_tips`, `status`, `entrydt`) VALUES
+(1, 'Improve Subscribers on Youtube', 'Improve-Subscribers-on-Youtube', 'Improve Subscribers on Youtube', 'public/category/1648994744266-download.jpg', '', 1, '2023-01-10 07:24:27'),
+(2, 'Improve Views on Youtube', 'Improve-Views-on-Youtube', 'Web design, graphics, video editing, logos and more.Improve Views on Youtube', 'public/category/1648994756230-download.jpg', '', 1, '2023-01-10 07:24:37'),
+(3, 'Improve Followers on Instagram', 'Improve-Followers-on-Instagram', 'Copywriters, SEO writers, translators and proofreaders.Improve Followers on Instagram', 'public/category/1648994763165-download.jpg', '', 1, '2023-01-10 07:24:50'),
+(4, 'Viral Instagram Posts', 'Viral-Instagram-Posts', 'Viral Instagram Posts', 'public/category/1648994770391-download.jpg', '', 1, '2023-01-10 07:29:24'),
+(5, 'Improve Shares On Youtube', 'Improve-Shares-On-Youtube', 'Improve Shares On Youtube', '', '', 1, '2023-01-10 07:25:08'),
+(6, 'Improve Shares On Facebook', 'Improve-Shares-On-Facebook', 'Improve Shares On Facebook', '', '', 1, '2023-01-10 07:25:16');
 
 -- --------------------------------------------------------
 
