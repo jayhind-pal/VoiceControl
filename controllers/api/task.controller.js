@@ -89,7 +89,7 @@ exports.update = (req, res) => {
 
   Task.updateById(
     req.body.id,
-    new task(updatedtask),
+    new Task(updatedtask),
     (err, data) => {
       if (err) {
         if (err.kind === "not_found") {
