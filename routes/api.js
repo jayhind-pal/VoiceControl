@@ -58,6 +58,12 @@ module.exports = app => {
     router.post("/task/create", [auth, taskUpload.single('task_attachment')], task_controller.create);
     router.post("/task/update", [auth, taskUpload.single('task_attachment')], task_controller.update);
     router.get("/tasks", auth, task_controller.findAll);
+
+    //task_attenders
+    const task_attenders = require("../controllers/api/task_attenders.controller.js");
+    router.post("/task/attenders/create", auth, task_attenders.create);
+    router.get("/task/attenders", auth, task_attenders.findAll);
+    router.get("/task/attended", auth, task_attenders.getAttendedTasks);
     
     app.use('/api/', router);
 };

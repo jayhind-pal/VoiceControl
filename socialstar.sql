@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 10, 2023 at 08:48 AM
+-- Generation Time: Apr 05, 2023 at 02:53 PM
 -- Server version: 10.4.22-MariaDB
 -- PHP Version: 7.4.26
 
@@ -79,7 +79,8 @@ INSERT INTO `email_verification` (`id`, `user_id`, `email`, `entrydt`) VALUES
 (19, 4, 'publicserver95@gmail.com', '2022-12-19 12:23:56'),
 (20, 1, 'publicserver95@gmail.com', '2022-12-19 12:25:16'),
 (21, 2, 'test11@gmail.com', '2022-12-21 11:54:23'),
-(22, 3, 'test11@gmail.com', '2022-12-28 09:29:34');
+(22, 3, 'test11@gmail.com', '2022-12-28 09:29:34'),
+(23, 5, 'test111@gmail.com', '2023-01-10 11:23:20');
 
 -- --------------------------------------------------------
 
@@ -127,6 +128,34 @@ CREATE TABLE `task` (
   `entrydt` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `task`
+--
+
+INSERT INTO `task` (`id`, `star_id`, `category_id`, `plan_id`, `amount`, `task_url`, `task_attachment`, `description`, `attender_id`, `start_date`, `end_date`, `expiry`, `entrydt`) VALUES
+(1, 1, 4, 5, 300, 'sdfsdsgdggsdgsgsdgsdgsdgsg', 'public\\tasks\\1674027788423-download (3).jpg', 'dgsadgsadgsadgsadgsadgsadgs', 0, '2023-01-01', '2023-01-15', '2023-01-15 22:00:00', '2023-01-10 11:27:11'),
+(2, 1, 1, 1, 200, 'https://example.com', 'public\\tasks\\1673350079002-download.jpg', 'test', 0, '2023-01-01', '2023-01-15', '2023-01-15 22:00:00', '2023-01-10 11:27:59');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `task_attenders`
+--
+
+CREATE TABLE `task_attenders` (
+  `id` int(11) NOT NULL,
+  `task_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `entrydt` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `task_attenders`
+--
+
+INSERT INTO `task_attenders` (`id`, `task_id`, `user_id`, `entrydt`) VALUES
+(1, 1, 1, '2023-04-05 12:46:40');
+
 -- --------------------------------------------------------
 
 --
@@ -167,7 +196,8 @@ INSERT INTO `users` (`id`, `type`, `name`, `mobile`, `email`, `password`, `addre
 (1, 'user', 'Test', '+911234567890', 'test@gmail.com', '$2b$10$Ka9fx9oiXriykNuyjzgi8OSRQoPRfn1q1QgZnLBN9Q6grW3hwGgXS', 'Indore', 'Male', 'public\\users\\1671623882265-69875452.jpg', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 1, '2022-12-21 12:05:28'),
 (2, 'user', 'Test', '+911234567890', 'test@gmail.com', '$2b$10$GjW1Ff4La2KmowqVFGCteegrkzIH5MDdPN4jWdfZ8miX0ucsBWWYS', 'Indore', 'Male', 'public\\users\\1672218744375-69875452.jpg', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 1, '2022-12-28 09:12:24'),
 (3, 'user', 'test', NULL, 'test11@gmail.com', '$2b$10$2Q40HBzgKFN1r9eo01MZY.9V2lPdAzI5yJI7pFs9z1MLh97O0324e', NULL, 'Other', 'public/company/no-image.png', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 1, '2022-12-28 09:29:33'),
-(4, 'user', 'test', NULL, 'test11@gmail.com', NULL, NULL, 'Other', 'public/company/no-image.png', NULL, NULL, NULL, NULL, NULL, 'facebook_id', 'facebook', NULL, NULL, NULL, 0, 0, 1, '2022-12-28 09:32:07');
+(4, 'user', 'test', NULL, 'test11@gmail.com', NULL, NULL, 'Other', 'public/company/no-image.png', NULL, NULL, NULL, NULL, NULL, 'facebook_id', 'facebook', NULL, NULL, NULL, 0, 0, 1, '2022-12-28 09:32:07'),
+(5, 'user', 'test', NULL, 'test111@gmail.com', '$2b$10$3onhn5QncdBRmJLlOlRNH.aOPmooRDcC34Tu6S/WbGiEORh2QoTs6', NULL, 'Other', 'public/company/no-image.png', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 1, '2023-01-10 11:23:20');
 
 --
 -- Indexes for dumped tables
@@ -198,6 +228,12 @@ ALTER TABLE `task`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `task_attenders`
+--
+ALTER TABLE `task_attenders`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
@@ -217,7 +253,7 @@ ALTER TABLE `category`
 -- AUTO_INCREMENT for table `email_verification`
 --
 ALTER TABLE `email_verification`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT for table `plan`
@@ -229,13 +265,19 @@ ALTER TABLE `plan`
 -- AUTO_INCREMENT for table `task`
 --
 ALTER TABLE `task`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `task_attenders`
+--
+ALTER TABLE `task_attenders`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
