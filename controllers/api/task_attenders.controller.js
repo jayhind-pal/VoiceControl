@@ -41,6 +41,19 @@ exports.findAll = (req, res) => {
     });
 };
 
+exports.getAttendersSummary = (req, res) => {
+  const star_id = req.query.star_id;
+  TaskAttenders.getAttendersSummary(star_id, (err, data) => {
+    if (err)
+      res.status(500).send({
+        error: err,
+        message:
+          err.message || trans.lang('message.something_went_wrong')
+      });
+    else res.send(data);
+  });
+};
+
 exports.getAttendedTasks = (req, res) => {
   const user_id = req.query.user_id;
   TaskAttenders.getAttendedTasks(user_id, (err, data) => {

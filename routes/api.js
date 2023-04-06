@@ -62,6 +62,7 @@ module.exports = app => {
     //task_attenders
     const task_attenders = require("../controllers/api/task_attenders.controller.js");
     router.post("/task/attenders/create", auth, task_attenders.create);
+    router.get("/task/attenders/summary", auth, task_attenders.getAttendersSummary);
     router.get("/task/attenders", auth, task_attenders.findAll);
     router.get("/task/attended", auth, task_attenders.getAttendedTasks);
     

@@ -30,6 +30,24 @@ TaskAttenders.findById = (id, result) => {
     result({ kind: "not_found" }, null);
   });
 };
+
+TaskAttenders.getAttendersSummary = (star_id, result) => {
+  let query = "SELECT COUNT(ta.id) AS total_attenders,c.category_name,t.description FROM task AS t LEFT JOIN task_attenders AS ta ON ta.task_id=t.id LEFT JOIN category AS c ON c.id=t.category_id";
+  if (star_id) {
+    query += ` WHERE t.star_id = '${star_id}'`;
+  }
+
+  query += ` GROUP BY t.id`;
+
+  sql.query(query, (err, res) => {
+    if (err) {
+      result(null, err);
+      return;
+    }
+    result(null, res);
+  });
+};
+
 TaskAttenders.getAll = (task_id, result) => {
   let query = "SELECT u.*,ta.task_id FROM task_attenders AS ta INNER JOIN users AS u ON u.id=ta.user_id";
   if (task_id) {
@@ -43,6 +61,7 @@ TaskAttenders.getAll = (task_id, result) => {
     result(null, res);
   });
 };
+
 TaskAttenders.getAttendedTasks = (user_id, result) => {
   let query = "SELECT t.*,c.category_name,ta.user_id FROM task_attenders AS ta INNER JOIN task AS t ON t.id=ta.task_id LEFT JOIN category AS c ON c.id=t.category_id";
   if (user_id) {
