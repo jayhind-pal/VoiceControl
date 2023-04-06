@@ -44,7 +44,7 @@ TaskAttenders.getAll = (task_id, result) => {
   });
 };
 TaskAttenders.getAttendedTasks = (user_id, result) => {
-  let query = "SELECT t.*,ta.user_id FROM task_attenders AS ta INNER JOIN task AS t ON t.id=ta.task_id";
+  let query = "SELECT t.*,c.category_name,ta.user_id FROM task_attenders AS ta INNER JOIN task AS t ON t.id=ta.task_id LEFT JOIN category AS c ON c.id=t.category_id";
   if (user_id) {
     query += ` WHERE ta.user_id = '${user_id}'`;
   }
