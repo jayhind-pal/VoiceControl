@@ -32,7 +32,7 @@ TaskAttenders.findById = (id, result) => {
 };
 
 TaskAttenders.getAttendersSummary = (star_id, result) => {
-  let query = "SELECT COUNT(ta.id) AS total_attenders,c.category_name,t.description FROM task AS t LEFT JOIN task_attenders AS ta ON ta.task_id=t.id LEFT JOIN category AS c ON c.id=t.category_id";
+  let query = "SELECT t.id as task_id,COUNT(ta.id) AS total_attenders,c.category_name,t.description FROM task AS t LEFT JOIN task_attenders AS ta ON ta.task_id=t.id LEFT JOIN category AS c ON c.id=t.category_id";
   if (star_id) {
     query += ` WHERE t.star_id = '${star_id}'`;
   }
