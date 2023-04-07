@@ -17,7 +17,7 @@ TaskAttenders.create = (newTaskAttenders, result) => {
   });
 };
 TaskAttenders.findById = (id, result) => {
-  sql.query(`SELECT * FROM task_attenders WHERE id = ${id}`, (err, res) => {
+  sql.query(`SELECT * FROM task_attenders WHERE id = ${id} ORDER BY id DESC`, (err, res) => {
     if (err) {
       result(err, null);
       return;
@@ -37,7 +37,7 @@ TaskAttenders.getAttendersSummary = (star_id, result) => {
     query += ` WHERE t.star_id = '${star_id}'`;
   }
 
-  query += ` GROUP BY t.id`;
+  query += ` GROUP BY t.id ORDER BY t.id DESC`;
 
   sql.query(query, (err, res) => {
     if (err) {
@@ -53,6 +53,9 @@ TaskAttenders.getAll = (task_id, result) => {
   if (task_id) {
     query += ` WHERE ta.task_id = '${task_id}'`;
   }
+
+  query += ` ORDER BY ta.id DESC`;
+
   sql.query(query, (err, res) => {
     if (err) {
       result(null, err);
@@ -67,6 +70,9 @@ TaskAttenders.getAttendedTasks = (user_id, result) => {
   if (user_id) {
     query += ` WHERE ta.user_id = '${user_id}'`;
   }
+
+  query += ` ORDER BY ta.id DESC`;
+
   sql.query(query, (err, res) => {
     if (err) {
       result(null, err);
@@ -75,6 +81,7 @@ TaskAttenders.getAttendedTasks = (user_id, result) => {
     result(null, res);
   });
 };
+
 TaskAttenders.updateById = (id, TaskAttenders, result) => {
   sql.query(
     "UPDATE task_attenders SET ? WHERE id = ?",
@@ -93,6 +100,7 @@ TaskAttenders.updateById = (id, TaskAttenders, result) => {
     }
   );
 };
+
 TaskAttenders.remove = (id, result) => {
   sql.query("DELETE FROM task_attenders WHERE id = ?", id, (err, res) => {
     if (err) {

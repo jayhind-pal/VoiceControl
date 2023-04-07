@@ -38,6 +38,9 @@ Task.getAll = (category_id, result) => {
   if (category_id) {
     query += ` WHERE category_id = '${category_id}'`;
   }
+
+  query += ` ORDER BY id DESC`;
+
   sql.query(query, (err, res) => {
     if (err) {
       result(null, err);
