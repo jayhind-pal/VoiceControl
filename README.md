@@ -1,6 +1,4 @@
-# Social Star
-
-Provide a way to improve social media subscribers, viewers etc. 
+# Voice Control Photo App
 
 ---
 ## Requirements
