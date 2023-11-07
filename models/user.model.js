@@ -65,11 +65,8 @@ User.findById = (id, result) => {
       result({ kind: "not_found" }, null);
     });
 };
-User.getAll = (type, result) => {
-  let query = "SELECT u.*,c.name as country_name FROM users as u LEFT JOIN country as c ON c.id=u.country";
-  if (type) {
-    query += ` WHERE type = '${type}'`;
-  }
+User.getAll = (result) => {
+  let query = "SELECT * FROM users";
   sql.query(query, (err, res) => {
     if (err) {
       result(null, err);

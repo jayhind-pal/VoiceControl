@@ -31,14 +31,9 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static('public')); 
 app.use('/public', express.static('public'));
 
-// simple route
-app.get("/", (req, res) => {
-  res.json({ message: "Welcome to "+global.appname });
-});
-
 //routes
 require('./routes/api.js')(app);
-// require('./routes/admin.js')(app);
+require('./routes/admin.js')(app);
 
 // set port, listen for requests
 app.listen(PORT, () => {

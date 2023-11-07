@@ -1,34 +1,24 @@
 const Admin = require("./../../models/admin.model.js");
+const User = require("./../../models/user.model.js");
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const ejs = require('ejs');
 const Mailer = require('./../../helpers/MailHelper');
 const mailer = new Mailer();
 
-//test html page rendering
-exports.testing = (req, res) => {
-    const admin = new Admin({
-        name: "test",
-        email: "publicserver95@gmail.com",
-        password: "12345"
-    });
-    // res.render('mails/send_admin_user.ejs', { admin});
-    res.render('mails/email_verification.ejs', { user: admin, verifyUrl: 'https://abc.com'});
+//login page
+exports.login = (req, res) => {
+    res.render('login.ejs', {appName: global.appname, error: req.query.error});
 };
 
 // Find a single User with a id
-exports.login = async (req, res) => {
+exports.loginSubmit = async (req, res) => {
     Admin.login(req.body.email, async (err, data) => {
         if (err) {
           if (err.kind === "not_found") {
-            res.status(404).send({
-              message: trans.lang('message.admin.invalid_credentials')
-            });
+            res.redirect('/login?error='+trans.lang('message.admin.invalid_credentials'));
           } else {
-            res.status(500).send({
-              error: err,
-              message: trans.lang('message.something_went_wrong')
-            });
+            res.redirect('/login?error='+trans.lang('message.something_went_wrong'));
           }
         } else {
             let passwordMatched = await bcrypt.compare(req.body.password, data.password);
@@ -44,16 +34,51 @@ exports.login = async (req, res) => {
           
                 // save user token
                 data.token = token;
-          
-                // user
-                res.status(200).json(data);
+                // localStorage.setItem("user", JSON.stringify(data));
+
+                res.redirect('/dashboard');
             }else{
-                res.status(404).send({
-                    message: trans.lang('message.admin.invalid_credentials')
-                });
+              res.redirect('/login?error='+trans.lang('message.admin.invalid_credentials'));
             }
         }
     });
+};
+
+//logout
+exports.logout = (req, res) => {
+  // localStorage.clear();
+  res.redirect('/login');
+};
+
+//dashboard
+exports.dashboard = (req, res) => {
+  Admin.getDashboard((err, data) => {
+    if (err)
+      res.redirect('/login?error='+trans.lang('message.something_went_wrong'));
+    else {
+        res.render('dashboard.ejs', {
+          appName: global.appname, 
+          error: req.query.error,
+          users: data.users,
+          admins: data.admins
+        });
+      }
+  });
+};
+
+//users
+exports.users = (req, res) => {
+  User.getAll((err, data) => {
+    if (err)
+      res.redirect('/login?error='+trans.lang('message.something_went_wrong'));
+    else {
+        res.render('users.ejs', {
+          appName: global.appname, 
+          error: req.query.error,
+          users: data
+        });
+      }
+  });
 };
 
 exports.findAll = (req, res) => {

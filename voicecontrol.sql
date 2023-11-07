@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 07, 2023 at 01:12 PM
+-- Generation Time: Nov 07, 2023 at 04:09 PM
 -- Server version: 10.4.11-MariaDB
 -- PHP Version: 7.4.5
 
@@ -20,6 +20,29 @@ SET time_zone = "+00:00";
 --
 -- Database: `voicecontrol`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `admins`
+--
+
+CREATE TABLE `admins` (
+  `id` int(11) NOT NULL,
+  `name` varchar(50) NOT NULL,
+  `email` varchar(20) NOT NULL,
+  `password` text NOT NULL,
+  `permissions` text NOT NULL,
+  `status` int(11) NOT NULL DEFAULT 1,
+  `entrydt` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `admins`
+--
+
+INSERT INTO `admins` (`id`, `name`, `email`, `password`, `permissions`, `status`, `entrydt`) VALUES
+(1, 'admin', 'admin@gmail.com', '$2b$10$cNn8vzTjWZMZxNLU3/A8oe1ZdUEAaa0XVXRM4xCJPUVRLS3hwSiaC', '', 1, '2023-11-07 14:08:19');
 
 -- --------------------------------------------------------
 
@@ -50,6 +73,12 @@ INSERT INTO `users` (`id`, `name`, `dob`, `zipcode`, `email`, `password`, `statu
 --
 
 --
+-- Indexes for table `admins`
+--
+ALTER TABLE `admins`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
@@ -58,6 +87,12 @@ ALTER TABLE `users`
 --
 -- AUTO_INCREMENT for dumped tables
 --
+
+--
+-- AUTO_INCREMENT for table `admins`
+--
+ALTER TABLE `admins`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `users`

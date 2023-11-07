@@ -86,38 +86,25 @@ Admin.updateById = (id, Admin, result) => {
   );
 };
 Admin.getDashboard = (result) => {
-    sql.query(`SELECT COUNT(*)as dashboard FROM category WHERE status=1
-        UNION ALL
-        SELECT COUNT(*)as dashboard FROM users WHERE type='freelancer' AND status=1
-        UNION ALL
-        SELECT COUNT(*)as dashboard FROM users WHERE type='client' AND status=1
-        UNION ALL
-        SELECT COUNT(*)as dashboard FROM posts WHERE status='pending'
-        UNION ALL
-        SELECT COUNT(*)as dashboard FROM posts WHERE status='awarded'
-        UNION ALL
-        SELECT COUNT(*)as dashboard FROM posts WHERE status='completed'
-        UNION ALL
-        SELECT COUNT(*)as dashboard FROM bids`, (err, res) => 
-    {
-        if (err) {
-            result(err, null);
-            return;
-        }
-        if (res.length) {
-            const dashbaord = {
-                categories: res[0]['dashboard'],
-                freelancers: res[1]['dashboard'],
-                clients: res[2]['dashboard'],
-                pendingJobs: res[3]['dashboard'],
-                awardedJob: res[4]['dashboard'],
-                completedJobs: res[5]['dashboard'],
-                bids: res[6]['dashboard']
-            }
-            result(null, dashbaord);
-            return;
-        }
-        result({ kind: "not_found" }, null);
+  let query = `SELECT COUNT(*)as dashboard FROM users WHERE status=1
+    UNION ALL
+    SELECT COUNT(*)as dashboard FROM admins WHERE status=1`;
+    
+    sql.query(query, (err, res) => {
+      if (err) {
+          result(err, null);
+          return;
+      }
+      
+      if (res.length) {
+          const dashbaord = {
+            users: res[0]['dashboard'],
+            admins: res[1]['dashboard'],
+          }
+          result(null, dashbaord);
+          return;
+      }
+      result({ kind: "not_found" }, null);
     });
 };
 module.exports = Admin;

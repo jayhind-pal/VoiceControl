@@ -12,6 +12,7 @@ module.exports = {
   required: "All fields are required.",
   admin: {
     invalid_credentials: "You have entered wrong credentials.",
+    login_to_continue: "Please login to continue.",
   },
   user: {
     invalid_credentials: "You have entered wrong credentials.",

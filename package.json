@@ -15,10 +15,11 @@
     "cors": "^2.8.5",
     "ejs": "^3.1.6",
     "express": "^4.17.3",
-    "jsonwebtoken": "^8.5.1",
+    "jsonwebtoken": "^9.0.2",
     "moment": "^2.29.1",
     "mysql": "^2.18.1",
     "node-env-file": "^0.1.8",
-    "nodemailer": "^6.7.3"
+    "nodemailer": "^6.7.3",
+    "nodemon": "^3.0.1"
   }
 }
