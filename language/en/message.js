@@ -10,9 +10,12 @@ module.exports = {
   document_required: "Document is required",
   not_found: "Data not found",
   required: "All fields are required.",
+  password_not_matched: "Confirm password does't matched.",
   admin: {
     invalid_credentials: "You have entered wrong credentials.",
     login_to_continue: "Please login to continue.",
+    token_expired: "Login has been expired.",
+    access_denied: "You don't have sufficient rights to access this page.",
   },
   user: {
     invalid_credentials: "You have entered wrong credentials.",

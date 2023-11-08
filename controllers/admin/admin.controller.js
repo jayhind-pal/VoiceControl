@@ -33,8 +33,8 @@ exports.loginSubmit = async (req, res) => {
                 );
           
                 // save user token
-                data.token = token;
-                // localStorage.setItem("user", JSON.stringify(data));
+                const permissions = data.permissions.split(',');
+                req.session.user = {...data, permissions, token};
 
                 res.redirect('/dashboard');
             }else{
@@ -46,8 +46,12 @@ exports.loginSubmit = async (req, res) => {
 
 //logout
 exports.logout = (req, res) => {
-  // localStorage.clear();
-  res.redirect('/login');
+  req.session.destroy((err) => {
+    if (err) {
+      console.error('Error destroying session:', err);
+    }
+    res.redirect('/login');
+  });
 };
 
 //dashboard
@@ -58,6 +62,7 @@ exports.dashboard = (req, res) => {
     else {
         res.render('dashboard.ejs', {
           appName: global.appname, 
+          user: req.session.user,
           error: req.query.error,
           users: data.users,
           admins: data.admins
@@ -74,120 +79,77 @@ exports.users = (req, res) => {
     else {
         res.render('users.ejs', {
           appName: global.appname, 
+          user: req.session.user,
           error: req.query.error,
-          users: data
+          page: req.query.page,
+          users: data,
+          user: data.find(item=> item.id===req.query.id)
         });
       }
   });
 };
 
-exports.findAll = (req, res) => {
-    const name = req.query.name;
-    Admin.getAll(name, (err, data) => {
-      if (err)
-        res.status(500).send({
-          error: err,
-          message:
-            err.message || trans.lang('message.something_went_wrong')
+//admins
+exports.admins = (req, res) => {
+  Admin.getAll((err, data) => {
+    if (err)
+      res.redirect('/login?error='+trans.lang('message.something_went_wrong'));
+    else {
+      let selected = req.query.id;   
+      const admin = data.find(item => item.id === parseInt(selected));
+
+      res.render('admins.ejs', {
+          appName: global.appname, 
+          user: req.session.user,
+          error: req.query.error,
+          page: req.query.page,
+          admins: data,
+          admin: {...admin, permissions: admin?.permissions.split(',')}
         });
-      else res.send(data);
-    });
+      }
+  });
 };
 
 // Create and Save a new Tutorial
-exports.create = async (req, res) => {
-    // Validate request
-    if (!req.body) {
-        res.status(400).send({
-            message: trans.lang('message.required')
-        });
-    }
-    
+exports.adminSubmit = async (req, res) => {   
     Admin.findByEmail(req.body.email, async (err, data) => {
-        if (err) 
-        {
-            if (err.kind === "not_found") 
-            {
-                let encPassword = await bcrypt.hash(req.body.password, 10);
-
-                // Create a Admin
-                const newRecord = new Admin({
-                    name: req.body.name,
-                    email: req.body.email,
-                    password: encPassword
-                });
-            
-                // Save Admin in the database
-                Admin.create(newRecord, async (err, data) => {
-                    if (err){
-                      res.status(500).send({
-                        error: err,
-                        message:
-                          err.message || trans.lang('message.something_went_wrong')
-                      });
-                    }else{
-                        const html = await ejs.renderFile('./views/mails/send_admin_user.ejs',{admin: req.body});
-                        mailer.send(req.body.email, "Welcome to 123Freela",html);  
-                        res.send(data);
-                    } 
-                });
-          } else {
-            res.status(500).send({
-              error: err,
-              message: trans.lang('message.something_went_wrong')
-            });
+        if (err) {
+          if (err.kind !== "not_found") {
+            res.redirect('/admins?page=form&id='+req.body.id+'&error='+trans.lang('message.something_went_wrong'));
+            return;
           }
-        } else {
-            res.status(500).send({
-              message: trans.lang('message.email_already_exists')
-            });
+        }else{
+          if(data.id != req.body.id){
+            res.redirect('/admins?page=form&id='+req.body.id+'&error='+trans.lang('message.email_already_exists'));
+            return;
+          }
         }
-    });
-};
-
-// Update a Admin identified by the id in the request
-exports.update = async (req, res) => {
-  // Validate Request
-  if (!req.body) {
-    res.status(400).send({
-      message: trans.lang('message.required')
-    });
-  }
-  let encPassword = await bcrypt.hash(req.body.password, 10);
-  let updatedAdmin = req.body;
-  updatedAdmin.password = encPassword;
-      
-  Admin.updateById(
-    req.body.id,
-    new Admin(updatedAdmin),
-    (err, data) => {
-      if (err) {
-        if (err.kind === "not_found") {
-          res.status(404).send({
-            error: err,
-            message: trans.lang('message.not_found')
-          });
-        } else {
-          res.status(500).send({
-            error: err,
-            message: trans.lang('message.something_went_wrong')
-          });
+    
+        // Save Admin in the database
+        let record = req.body;
+        record.permissions = record.permissions.join();
+        if(req.body.password !== ''){
+          record.password = await bcrypt.hash(req.body.password, 10);
+        }else{
+          delete record.password;
         }
-      } else res.send(data);
-    }
-  );
-};
-
-
-exports.getDashboard = (req, res) => {
-    Admin.getDashboard((err, data) => {
-        if (err)
-            res.status(500).send({
-              message:
-                err.message || trans.lang('message.something_went_wrong')
-            });
-        else {
-            res.send(data);
+        
+        if(req.body.id){
+          Admin.updateById(req.body.id, new Admin(record), async (err, data) => {
+            if (err){
+              res.redirect('/admins?page=form&id='+req.body.id+'&error='+trans.lang('message.something_went_wrong'));
+            }else{
+              res.redirect('/admins');
+            } 
+          });
+        }else{
+          Admin.create(new Admin(record), async (err, data) => {
+            if (err){
+              res.redirect('/admins?page=form&id='+req.body.id+'&error='+trans.lang('message.something_went_wrong'));
+            }else{
+              res.redirect('/admins');
+            } 
+          });
         }
     });
 };

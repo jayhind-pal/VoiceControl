@@ -9,6 +9,9 @@ module.exports = app => {
     router.post("/user/login", users_controller.login);
     router.post("/user/signup", users_controller.signup);
     router.post("/user/forgot-password", users_controller.forgotPassword);
+    router.get("/reset-password", users_controller.resetPassword);
+    router.post("/resetPasswordSubmit", users_controller.resetPasswordSubmit);    
+    router.get("/success", users_controller.success);
 
     app.use('/api/', router);
 };

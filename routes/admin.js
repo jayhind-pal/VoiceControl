@@ -12,16 +12,11 @@ module.exports = app => {
     router.get("/logout", admins_controller.logout);
 
     //after login::protected
-    router.get("/dashboard", admins_controller.dashboard);
-    router.get("/users", admins_controller.users);
-    
+    router.get("/dashboard", adminAuth, admins_controller.dashboard);
+    router.get("/users", adminAuth, admins_controller.users);    
+    router.get("/admins", adminAuth, admins_controller.admins);    
 
-
-    // router.get("/admins", adminAuth, admins_controller.findAll);
-    // router.post("/admin/create", adminAuth, admins_controller.create);
-    // router.post("/admin/update", adminAuth, admins_controller.update);
-    // router.get("/dashboard", adminAuth, admins_controller.getDashboard);
-    // router.get("/testing", admins_controller.testing);
+    router.post("/adminSubmit", admins_controller.adminSubmit);    
     
     app.use('/', router);
 };

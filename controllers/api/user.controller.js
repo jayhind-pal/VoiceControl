@@ -1,4 +1,5 @@
 const User = require("./../../models/user.model.js");
+const emailVerification = require("./../../models/email_verification.model.js");
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const ejs = require('ejs');
@@ -103,7 +104,75 @@ exports.forgotPassword = async (req, res) => {
             });
           }
         } else {
-            res.send({message: "We have sent a Reset password link to your email - "+req.body.email});
+          emailVerification.create({user_id: data.id, email: data.email}, async (err, evdata) => {
+            if (!err){
+                const resetLink = base_url + 'api/reset-password?evid='+evdata.id+'&uid='+data.id+"&email="+data.email;
+                const html = await ejs.renderFile('./views/mails/email_verification.ejs',{
+                    user: req.body,
+                    resetLink
+                });
+                mailer.send(req.body.email, `Welcome to ${global.appname}`, html);  
+
+                res.send({message: "We have sent a Reset password link to your email - "+req.body.email, resetLink});
+                return;
+            }
+
+            res.status(500).send({
+              error: err,
+              message: trans.lang('message.something_went_wrong')
+            });
+          });
         }
     });
+};
+exports.resetPassword = (req, res) => {
+  // Validate Request
+  if (!req.query) {
+    res.redirect(base_url+'page-not-found');
+    return;
+  }
+    
+  emailVerification.findRecord(req.query.evid, req.query.uid, req.query.email, (err, data) => {
+    if (err) {
+      res.redirect(base_url+'page-not-found');
+      return;
+    }
+    
+    res.render('resetPassword.ejs', {
+      appName: global.appname, 
+      query: req.query
+    });
+  });
+};
+exports.resetPasswordSubmit = async (req, res) => {   
+  User.findByEmail(req.body.email, async (err, data) => {
+      if (err) {
+        if (err.kind !== "not_found") {
+          res.redirect('/api/reset-password?evid='+req.body.evid+'&uid='+req.body.uid+"&email="+req.body.email+'&error='+trans.lang('message.something_went_wrong'));
+          return;
+        }
+      }
+  
+      // confirm password
+      if(req.body.password !== req.body.confirm_password){
+        res.redirect('/api/reset-password?evid='+req.body.evid+'&uid='+req.body.uid+"&email="+req.body.email+'&error='+trans.lang('message.password_not_matched'));
+        return;
+      }
+
+      // Save user in the database
+      let record = {password: await bcrypt.hash(req.body.password, 10)};
+      User.updateById(data.id, new User(record), async (err, data) => {
+        if (err){
+          res.redirect('/api/reset-password?evid='+req.body.evid+'&uid='+req.body.uid+"&email="+req.body.email+'&error='+trans.lang('message.something_went_wrong'));
+        }else{
+          emailVerification.delete(req.body.evid, (err, data) => {});
+          res.redirect('/api/success');
+        } 
+      });
+  });
+};
+exports.success = (req, res) => {
+  res.render('success.ejs', {
+    appname: global.appname, 
+  });
 };

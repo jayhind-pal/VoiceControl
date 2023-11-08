@@ -5,11 +5,11 @@ const config = process.env;
 const verifyToken = (req, res, next) => {
   let token = null;
 
-  let userString = localStorage.getItem("user");
-  if(userString){
-    const userJSON = JSON.parse(userString);
-    if(Boolean(userJSON.token)){
-      token = userJSON.token;
+  if(req.session.user){
+    token = req.session.user.token;
+
+    if(!req.session.user.permissions.includes(req.path.replace("/",""))){
+      res.redirect('/login?error='+trans.lang('message.admin.access_denied'));
     }
   }
 
@@ -22,7 +22,7 @@ const verifyToken = (req, res, next) => {
     req.user = decoded;
     req.user.token = token;
   } catch (err) {
-    res.redirect('/login?error='+trans.lang('message.admin.login_to_continue'));
+    res.redirect('/login?error='+trans.lang('message.admin.token_expired'));
   }
 
   return next();

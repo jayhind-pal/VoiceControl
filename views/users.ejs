@@ -41,79 +41,9 @@
             <div class="page-content-wrap">
                 <div class="row">
                     <div class="col-md-12">
-                    
-                        <div class="panel panel-default" style="<?=(isset($_GET['page']) && $_GET['page']=='form')?'':'display:none;'?>">
-                            <form class="form-horizontal" style="<?=$form?'':'display:none;'?>"  action="<?php echo site_url('site/user_submit'); ?>" method="post" enctype="multipart/form-data">
-                                <div class="panel-heading">
-                                    <h3 class="panel-title"><strong>Add User</strong> Master</h3>
-                                    <a href="?page=list" class="btn btn-primary btn-rounded pull-right"><i class="fa fa-list"></i> Back To List</a>
-                                </div>   
-                                <h4 style="color: red;text-align: center;"></h4>
-                                <div class="panel-body">
-                                    <div class="form-group">
-                                        <div class="col-md-4 col-xs-12">
-                                            <label>Name</label>
-                                            <div class="input-group">
-                                                <span class="input-group-addon"><span class="fa fa-lock"></span></span>
-                                                <input type="hidden" name="user_id" value="<?=$data['user_id']?>">
-                                                <input type="text" name="name" class="form-control" placeholder='Enter name' value="<?=$data['name']?>">
-                                            </div>                                
-                                        </div>
-                                        <div class="col-md-4 col-xs-12">
-                                            <label>Mobile</label>
-                                            <div class="input-group">
-                                                <span class="input-group-addon"><span class="fa fa-phone"></span></span>
-                                                <input type="text" name="mobile" id="mobile" class="form-control" placeholder='Enter Mobile Of User' value="<?=$data['mobile']?>">
-                                            </div>                                
-                                        </div>
-                                        <div class="col-md-4 col-xs-12">
-                                            <label>Email</label>
-                                            <div class="input-group">
-                                                <span class="input-group-addon"><span class="fa fa-envelope"></span></span>
-                                                <input type="email" name="email" id="email" class="form-control" placeholder='Enter Email Of User' value="<?=$data['email']?>">
-                                            </div>                                
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <div class="col-md-4 col-xs-12">
-                                            <label>Address</label>
-                                            <div class="input-group">
-                                                <span class="input-group-addon"><span class="fa fa-globe"></span></span>
-                                                <input type="text" name="address" class="form-control" placeholder='Enter Your Address' value="<?=$data['address']?>">
-                                            </div>                                 
-                                        </div>
-                                        <div class="col-md-4 col-xs-12">
-                                            <label>Password</label>
-                                            <div class="input-group">
-                                                <span class="input-group-addon"><span class="fa fa-lock"></span></span>
-                                                <input type="password" name="password" id="password" class="form-control" placeholder='Enter password Of User' value="<?=$data['password']?>">
-                                            </div>                                
-                                        </div>
-                                        <div class="col-md-4 col-xs-12">
-                                            <label>Image</label>
-                                            <input type="file" name="user_image" onchange="imagesPreview(this, 'div.gallery')" class="form-control" required>
-                                            <div class="gallery">
-                                                <img src="<?=base_url($data['user_image'])?>">
-                                            </div>
-                                        </div>
-                                    </div>
-            
-                                    <div class="panel-footer">
-                                        <a  class="btn btn-default" onclick="reset();">Clear Form</a>
-                                        <input type="submit" id="submit" class="btn btn-primary pull-right" value="Submit">
-                                    </div> <!-- END panel-footer -->
-                                </div> <!-- END panel-body -->
-                            </form>
-                        </div> <!-- END panel panel-default -->
-                    
-                    </div> <!-- END col-md-6 -->
-            
-                    
-                    <div class="col-md-12" style="<?=(isset($_GET['page']) && $_GET['page']=='form')?'display:none;':''?>">
                         <div class="panel panel-default">
                             <div class="panel-heading">
                                 <h3 class="panel-title"><strong>Users</strong> List</h3>
-                                <a href="?page=form" class="btn btn-primary btn-rounded pull-right"><i class="fa fa-plus"></i> Add New</a>
                             </div>
                             <h4 style="color: red;text-align: center;"></h4>
                             <div class="panel-body">
@@ -122,48 +52,29 @@
                                         <thead>
                                             <tr>
                                                 <th>S. No.</th>
-                                                <th>Image</th>
                                                 <th>Name</th>
+                                                <th>DOB</th>
                                                 <th>Email</th>
-                                                <th>Mobile</th>
-                                                <th>Status</th>
-                                                <th>Update</th>
-                                                <!--<th>Delete</th>-->
+                                                <th>Zipcode</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <?php
-                                            $i = 0;
-                                            foreach($user as $r)
-                                            {
-                                                $i++;                                
-                                            ?>
+                                            <% for (let i = 0; i < users.length; i++) { %>
                                             <tr>
-                                                <td><?php echo $i; ?></td>
-                                                    <td><img class="image-responsive" src="<?=base_url($r->user_image)?>" alt="<?=$r->name?>"></td> 
-                                                <td><?php echo $r->name; ?></td>
-                                                <td><?php echo $r->email; ?></td>
-                                                <td><?php echo $r->mobile; ?></td>
-                                                <td>
-                                                    <a href="<?=site_url('site/change_user_status').'?q='.$r->user_id?>" onclick="return confirm('Do You want Change the Status Of This User')" class="btn <?=$r->status?'btn-primary':'btn-danger'?>"><i class="fa fa-edit"></i> <?=$r->status?'Active':'Inactive'?></a>
-                                                </td>
-                                                <td>
-                                                    <a href="<?=site_url('site/user').'?page=form&q='.$r->user_id?>" class="btn btn-primary"><i class="fa fa-pencil"></i></a>
-                                                </td>
-                                                <!--<td>-->
-                                                <!--    <a href="#" onclick="open_msg('<?=site_url('site/user_delete').'?q='.$r->user_id?>');" class="btn btn-primary"><i class="fa fa-trash-o"></i></a>-->
-                                                <!--</td>-->
+                                                <td><%= i + 1 %></td>
+                                                <td><%= users[i].name %></td>
+                                                <td><%= formatDate(users[i].dob) %></td>
+                                                <td><%= users[i].email %></td>
+                                                <td><%= users[i].zipcode %></td>
                                             </tr>
-                                            <?php                            
-                                            }
-                                            ?>
+                                            <% } %>
                                         </tbody>
                                     </table>
                                 </div>
                             </div> <!-- END panel-body -->
                         </div> <!-- END panel panel-default -->
                     </div> <!-- END col-md-6 -->
-                    
+            
                 </div> <!-- END row -->
             </div> <!-- END page-content-wrap -->
             <!-- END PAGE CONTENT WRAPPER -->      
@@ -172,6 +83,23 @@
         <!-- END PAGE CONTENT -->
     </div>
     <!-- END PAGE CONTAINER -->
+
+    <% function formatDate(dob) {
+        // Create a Date object from the DOB string
+        const dobDate = new Date(dob);
+        
+        // Get day, month, and year components
+        const day = dobDate.getDate();
+        const month = dobDate.getMonth() + 1; // Months are 0-based, so add 1
+        const year = dobDate.getFullYear();
+        
+        // Pad day and month with leading zeros if needed
+        const formattedDay = day < 10 ? `0${day}` : day;
+        const formattedMonth = month < 10 ? `0${month}` : month;
+        
+        // Return the formatted date as "dd mm yyyy"
+        return `${formattedDay}/${formattedMonth}/${year}`;
+      } %>
 
     <!-- INCLUDE PAGE FOOTER -->
     <%- include('includes/footer.ejs') %>

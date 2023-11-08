@@ -1,0 +1,190 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- INCLUDE PAGE HEADER -->
+    <%- include('includes/header.ejs') %>
+</head>
+<body>
+        <!-- START PAGE CONTAINER -->
+    <div class="page-container">
+        
+        <!-- INCLUDE PAGE SIDEBAR -->
+        <%- include('includes/sidebar.ejs') %>
+        
+        <!-- PAGE CONTENT -->
+        <div class="page-content">
+
+            <!-- INCLUDE PAGE TOP -->
+            <%- include('includes/top.ejs') %>
+
+            
+            <script>
+            $( document ).ready(function() {
+                $("#admins").addClass('active');
+            });   
+            function open_msg(link)
+            {
+                $("#delete_log").prop('href',link);
+                $("#mb-delete").modal('show');
+            }
+            </script>
+            
+            <!-- START BREADCRUMB -->
+            <ul class="breadcrumb">
+                <li><a href="#">Dashboard</a></li>
+                <li><a href="#">Admins</a></li>    
+            </ul>
+            <!-- END BREADCRUMB -->
+            
+            <!-- PAGE CONTENT WRAPPER -->
+            <div class="page-content-wrap">
+                <div class="row">
+
+                    <% if(page && page=='form') { %>
+                        <div class="col-md-12">
+                            <div class="panel panel-default">
+                                <form class="form-horizontal" action="/adminSubmit" method="post">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title"><strong>Add Admins</strong></h3>
+                                        <a href="?page=list" class="btn btn-primary btn-rounded pull-right"><i class="fa fa-list"></i> Back To List</a>
+                                    </div>   
+
+                                    <h4 style="color: red;text-align: center;"><%=error%></h4>
+                            
+                                    <div class="panel-body">
+                                        <div class="row">
+                                            <div class="col-md-6 col-xs-12">
+                                                <div class="form-group">
+                                                    <label>Name</label>
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon"><span class="fa fa-lock"></span></span>
+                                                        <input type="hidden" name="id" value="<%=admin?.id%>">
+                                                        <input type="text" name="name" class="form-control" placeholder='Enter name' value="<%=admin?.name%>">
+                                                    </div>                                
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>Email</label>
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon"><span class="fa fa-envelope"></span></span>
+                                                        <input type="email" name="email" id="email" class="form-control" placeholder='Enter Email' value="<%=admin?.email%>">
+                                                    </div>                                
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>Password</label>
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon"><span class="fa fa-lock"></span></span>
+                                                        <input type="password" name="password" id="password" class="form-control" placeholder='Enter New password'>
+                                                    </div>                                
+                                                </div>
+                                            </div>
+                                            <div class="col-md-1 col-xs-12"></div>
+                                            <div class="col-md-4 col-xs-12">
+                                                <div class="form-group">
+                                                    <label>
+                                                        <i class="fa fa-lock"></i>
+                                                        Permissions
+                                                    </label>
+                                                    <div class="table-responsive">
+                                                        <table class="table">
+                                                            <tr>
+                                                                <th>Dashboard</th>
+                                                                <td>
+                                                                    <label class="switch switch-small">
+                                                                        <input type="checkbox" name="permissions[]" value="dashboard" <%=admin?.permissions.includes('dashboard') ? 'checked':''%>/>
+                                                                        <span></span>
+                                                                    </label>     
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>Admins</th>
+                                                                <td>
+                                                                    <label class="switch switch-small">
+                                                                        <input type="checkbox" name="permissions[]" value="admins" <%=admin?.permissions.includes('admins') ? 'checked':''%>/>
+                                                                        <span></span>
+                                                                    </label>     
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>Users</th>
+                                                                <td>
+                                                                    <label class="switch switch-small">
+                                                                        <input type="checkbox" name="permissions[]" value="users" <%=admin?.permissions.includes('users') ? 'checked':''%>/>
+                                                                        <span></span>
+                                                                    </label>     
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                    </div>    
+                                                </div>                         
+                                            </div>
+                                        </div>
+                                    </div> <!-- END panel-body -->
+                                    <div class="panel-footer">
+                                        <input type="submit" id="submit" class="btn btn-primary" value="Submit">
+                                    </div> <!-- END panel-footer -->
+                                </form>
+                            </div> <!-- END panel panel-default -->
+                        </div> <!-- END col-md-6 -->
+                    
+                        <%
+                    }else{
+                    %>
+                    
+                    <div class="col-md-12">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h3 class="panel-title"><strong>Admins</strong> List</h3>
+                                <a href="?page=form" class="btn btn-primary btn-rounded pull-right"><i class="fa fa-plus"></i> Add New</a>
+                            </div>
+                            <h4 style="color: red;text-align: center;"></h4>
+                            <div class="panel-body">
+                                <div class="table-responsive">
+                                    <table class="table datatable">
+                                        <thead>
+                                            <tr>
+                                                <th>S. No.</th>
+                                                <th>Name</th>
+                                                <th>Email</th>
+                                                <th>Update</th>
+                                                <!--<th>Delete</th>-->
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <% for (let i = 0; i < admins.length; i++) { %>
+                                            <tr>
+                                                <td><%= i + 1 %></td>
+                                                <td><%= admins[i].name %></td>
+                                                <td><%= admins[i].email %></td>
+                                                <td>
+                                                <a href="?page=form&id=<%= admins[i].id %>" class="btn btn-primary">
+                                                    <i class="fa fa-pencil"></i>
+                                                </a>
+                                                </td>
+                                            </tr>
+                                            <% } %>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div> <!-- END panel-body -->
+                        </div> <!-- END panel panel-default -->
+                    </div> <!-- END col-md-6 -->
+                    
+                    <%
+                }
+                %>
+
+                </div> <!-- END row -->
+            </div> <!-- END page-content-wrap -->
+            <!-- END PAGE CONTENT WRAPPER -->      
+
+        </div>
+        <!-- END PAGE CONTENT -->
+    </div>
+    <!-- END PAGE CONTAINER -->
+
+    <!-- INCLUDE PAGE FOOTER -->
+    <%- include('includes/footer.ejs') %>
+
+</body>
+</html>
