@@ -1,4 +1,6 @@
 const express = require("express");
+const session = require('express-session');
+const cookieParser = require('cookie-parser');
 const cors = require("cors");
 const app = express();
 const bodyParser = require('body-parser');
@@ -30,6 +32,19 @@ app.use(bodyParser.urlencoded({extended: true}));
 //files url
 app.use(express.static('public')); 
 app.use('/public', express.static('public'));
+
+
+// Use the 'cookie-parser' middleware to parse cookies.
+app.use(cookieParser());
+
+// Configure 'express-session'.
+app.use(session({
+  secret: 'voice-control-app', // Replace with a strong, random secret
+  resave: false,
+  saveUninitialized: true,
+  cookie: { secure: false } // Set secure to true for HTTPS
+}));
+
 
 //routes
 require('./routes/api.js')(app);

@@ -13,6 +13,7 @@ module.exports = {
   admin: {
     invalid_credentials: "You have entered wrong credentials.",
     login_to_continue: "Please login to continue.",
+    token_expired: "Login has been expired.",
   },
   user: {
     invalid_credentials: "You have entered wrong credentials.",

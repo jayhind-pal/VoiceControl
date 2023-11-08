@@ -36,11 +36,8 @@ Admin.findByEmail = (email, result) => {
       result({ kind: "not_found" }, null);
     });
 };
-Admin.getAll = (name, result) => {
+Admin.getAll = (result) => {
   let query = "SELECT * FROM admins";
-  if (name) {
-    query += ` WHERE name LIKE '%${name}%'`;
-  }
   sql.query(query, (err, res) => {
     if (err) {
       result(null, err);
