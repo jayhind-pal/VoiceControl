@@ -21,13 +21,13 @@
         </li>
         
         <!--For Dashboard-->
-        <li id="dashboard" style="<%=user.permissions.includes('dashboard') ? '':'display: none;'%>">
+        <li id="dashboard" style="<%=user?.permissions?.includes('dashboard') ? '':'display: none;'%>">
             <a href="/dashboard"><span class="fa fa-cube"></span> <span class="xn-text">Dashboard</span></a>
         </li>
-        <li id="admins" style="<%=user.permissions.includes('admins') ? '':'display: none;'%>">
+        <li id="admins" style="<%=user?.permissions?.includes('admins') ? '':'display: none;'%>">
             <a href="/admins"><span class="fa fa-users"></span> <span class="xn-text">Admins</span></a>
         </li>
-        <li id="users" style="<%=user.permissions.includes('users') ? '':'display: none;'%>">
+        <li id="users" style="<%=user?.permissions?.includes('users') ? '':'display: none;'%>">
             <a href="/users"><span class="fa fa-users"></span> <span class="xn-text">Users</span></a>
         </li>
         

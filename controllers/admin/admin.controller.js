@@ -83,7 +83,6 @@ exports.users = (req, res) => {
           error: req.query.error,
           page: req.query.page,
           users: data,
-          user: data.find(item=> item.id===req.query.id)
         });
       }
   });
