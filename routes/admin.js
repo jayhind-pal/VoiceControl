@@ -15,14 +15,8 @@ module.exports = app => {
     router.get("/dashboard", adminAuth, admins_controller.dashboard);
     router.get("/users", adminAuth, admins_controller.users);    
     router.get("/admins", adminAuth, admins_controller.admins);    
-    router.post("/adminSubmit", adminAuth, admins_controller.adminSubmit);    
 
-
-    // router.get("/admins", adminAuth, admins_controller.findAll);
-    // router.post("/admin/create", adminAuth, admins_controller.create);
-    // router.post("/admin/update", adminAuth, admins_controller.update);
-    // router.get("/dashboard", adminAuth, admins_controller.getDashboard);
-    // router.get("/testing", admins_controller.testing);
+    router.post("/adminSubmit", admins_controller.adminSubmit);    
     
     app.use('/', router);
 };

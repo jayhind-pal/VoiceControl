@@ -2,7 +2,7 @@ const nodemailer = require('nodemailer');
 class Mailer {
     constructor(){
         this.transporter = nodemailer.createTransport({
-            host: '123freela.com',
+            host: process.env.MAILER_HOST,
             port: 25,
             auth: {
                 user: process.env.MAILER_USER,
@@ -15,7 +15,7 @@ class Mailer {
         });
         
         this.mailOptions = {
-            from: process.env.ADMIN_EMAIL                   // sender's gmail
+            from: process.env.FROM_EMAIL                   // sender's gmail
         };
     }
 

@@ -91,7 +91,7 @@
                                                                 <th>Dashboard</th>
                                                                 <td>
                                                                     <label class="switch switch-small">
-                                                                        <input type="checkbox" name="permissions[]" value="Dashboard"/>
+                                                                        <input type="checkbox" name="permissions[]" value="dashboard" <%=admin?.permissions.includes('dashboard') ? 'checked':''%>/>
                                                                         <span></span>
                                                                     </label>     
                                                                 </td>
@@ -100,7 +100,7 @@
                                                                 <th>Admins</th>
                                                                 <td>
                                                                     <label class="switch switch-small">
-                                                                        <input type="checkbox" name="permissions[]" value="Admins"/>
+                                                                        <input type="checkbox" name="permissions[]" value="admins" <%=admin?.permissions.includes('admins') ? 'checked':''%>/>
                                                                         <span></span>
                                                                     </label>     
                                                                 </td>
@@ -109,7 +109,7 @@
                                                                 <th>Users</th>
                                                                 <td>
                                                                     <label class="switch switch-small">
-                                                                        <input type="checkbox" name="permissions[]" value="Users"/>
+                                                                        <input type="checkbox" name="permissions[]" value="users" <%=admin?.permissions.includes('users') ? 'checked':''%>/>
                                                                         <span></span>
                                                                     </label>     
                                                                 </td>

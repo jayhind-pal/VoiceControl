@@ -8,8 +8,9 @@ const verifyToken = (req, res, next) => {
   if(req.session.user){
     token = req.session.user.token;
 
-    const permissions = req.session.user.permissions.split(",");
-    // console.log("permissions", permissions);
+    if(!req.session.user.permissions.includes(req.path.replace("/",""))){
+      res.redirect('/login?error='+trans.lang('message.admin.access_denied'));
+    }
   }
 
   if (!token) {

@@ -33,7 +33,8 @@ exports.loginSubmit = async (req, res) => {
                 );
           
                 // save user token
-                req.session.user = {...data, token};
+                const permissions = data.permissions.split(',');
+                req.session.user = {...data, permissions, token};
 
                 res.redirect('/dashboard');
             }else{
@@ -103,7 +104,7 @@ exports.admins = (req, res) => {
           error: req.query.error,
           page: req.query.page,
           admins: data,
-          admin: admin
+          admin: {...admin, permissions: admin?.permissions.split(',')}
         });
       }
   });
@@ -115,10 +116,12 @@ exports.adminSubmit = async (req, res) => {
         if (err) {
           if (err.kind !== "not_found") {
             res.redirect('/admins?page=form&id='+req.body.id+'&error='+trans.lang('message.something_went_wrong'));
+            return;
           }
         }else{
           if(data.id != req.body.id){
             res.redirect('/admins?page=form&id='+req.body.id+'&error='+trans.lang('message.email_already_exists'));
+            return;
           }
         }
     
