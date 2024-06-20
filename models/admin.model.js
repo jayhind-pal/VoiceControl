@@ -104,4 +104,15 @@ Admin.getDashboard = (result) => {
       result({ kind: "not_found" }, null);
     });
 };
+
+Admin.getActivity = (result) => {
+  let query = "SELECT * FROM activities";
+  sql.query(query, (err, res) => {
+    if (err) {
+      result(null, err);
+      return;
+    }
+    result(null, res);
+  });
+}
 module.exports = Admin;

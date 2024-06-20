@@ -15,8 +15,10 @@ module.exports = app => {
     router.get("/dashboard", adminAuth, admins_controller.dashboard);
     router.get("/users", adminAuth, admins_controller.users);    
     router.get("/admins", adminAuth, admins_controller.admins);    
-
+    router.get("/activity",adminAuth, admins_controller.activity)
     router.post("/adminSubmit", admins_controller.adminSubmit);    
+    router.post("/updateUser",admins_controller.updateUser);
+    router.get("/deleteUser/:id",admins_controller.deleteUser)
     
     app.use('/', router);
 };

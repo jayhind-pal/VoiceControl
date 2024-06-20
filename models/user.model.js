@@ -66,7 +66,7 @@ User.findById = (id, result) => {
     });
 };
 User.getAll = (result) => {
-  let query = "SELECT * FROM users";
+  let query = "SELECT * FROM users WHERE deletedAt IS NULL";
   sql.query(query, (err, res) => {
     if (err) {
       result(null, err);

@@ -23,11 +23,12 @@
             $( document ).ready(function() {
                 $("#users").addClass('active');
             });   
+
             function open_msg(link)
             {
                 $("#delete_log").prop('href',link);
                 $("#mb-delete").modal('show');
-            }
+            }         
             </script>
             
             <!-- START BREADCRUMB -->
@@ -40,6 +41,64 @@
             <!-- PAGE CONTENT WRAPPER -->
             <div class="page-content-wrap">
                 <div class="row">
+
+                    <% if(page && page=='form') { %>
+                       
+                        <div class="col-md-12">
+                            <div class="panel panel-default">
+                                <form class="form-horizontal" action="/updateUser" method="post">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title"><strong>Update User</strong></h3>
+                                        <a href="?page=list" class="btn btn-primary btn-rounded pull-right"><i class="fa fa-list"></i> Back To List</a>
+                                    </div>                               
+                                    <h4 style="color: red;text-align: center;"><%=error%></h4>
+                            
+                                    <div class="panel-body">
+                                        <div class="row">
+                                            <div class="form-group ">
+                                                <div class="col-md-3 col-xs-12">
+                                                    <label>Name</label>
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon"><span class="fa fa-lock"></span></span>
+                                                        <input type="hidden" name="id" value="<%=updateUser?.id%>">
+                                                        <input type="text" name="name" class="form-control" placeholder='Enter name' value="<%=updateUser?.name%>">
+                                                    </div>                                
+                                                </div>
+                                                <div class="col-md-3 col-xs-12">
+                                                    <label>Email</label>
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon"><span class="fa fa-envelope"></span></span>
+                                                        <input type="email" name="email" id="email" class="form-control" placeholder='Enter Email' value="<%=updateUser?.email%>">
+                                                    </div>                                
+                                                </div>
+                                                <div class="col-md-3 col-xs-12">
+                                                    <label>Zipcode</label>
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon"><span class="fa fa-lock"></span></span>
+                                                        <input type="string" name="zipcode" id="zipcode" class="form-control" placeholder='Enter Zipcode' value="<%=updateUser?.zipcode%>">
+                                                    </div>                                
+                                                </div>
+                                                <div class="col-md-3 col-xs-12">
+                                                    <label>Date of Birth</label>
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon"><span class="fa fa-lock"></span></span>
+                                                            <input type="date" name="dob" id="dob" class="form-control" placeholder='Enter Date of birth' value="<%= updateUser?.dob %>">
+                                                    </div>                                
+                                                </div>
+                                            </div>                                            
+                                        </div>
+                                    </div> <!-- END panel-body -->
+                                    <div class="panel-footer">
+                                        <input type="submit" id="submit" class="btn btn-primary" value="Submit">
+                                    </div> <!-- END panel-footer -->
+                                </form>
+                            </div> <!-- END panel panel-default -->
+                        </div> <!-- END col-md-6 -->
+                    
+                        <%
+                    }else{
+                    %>
+
                     <div class="col-md-12">
                         <div class="panel panel-default">
                             <div class="panel-heading">
@@ -56,6 +115,8 @@
                                                 <th>DOB</th>
                                                 <th>Email</th>
                                                 <th>Zipcode</th>
+                                                <th>Update</th>
+                                                <th>Delete</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -66,6 +127,16 @@
                                                 <td><%= formatDate(users[i].dob) %></td>
                                                 <td><%= users[i].email %></td>
                                                 <td><%= users[i].zipcode %></td>
+                                                <td>
+                                                    <a href="?page=form&id=<%= users[i].id %>" class="btn btn-primary">
+                                                        <i class="fa fa-pencil"></i>
+                                                    </a>
+                                                </td>
+                                                <td>
+                                                    <a href="#" class="mb-control btn btn-primary delete-user" data-id="<%= users[i].id %>">
+                                                        <i class="fa fa-trash-o"></i>
+                                                    </a>
+                                                </td>
                                             </tr>
                                             <% } %>
                                         </tbody>
@@ -74,6 +145,9 @@
                             </div> <!-- END panel-body -->
                         </div> <!-- END panel panel-default -->
                     </div> <!-- END col-md-6 -->
+                    <%
+                }
+                %>
             
                 </div> <!-- END row -->
             </div> <!-- END page-content-wrap -->
@@ -83,7 +157,19 @@
         <!-- END PAGE CONTENT -->
     </div>
     <!-- END PAGE CONTAINER -->
-
+    <form id="deleteForm" action="" method="DELETE" style="display: none;">
+        <input type="hidden" name="_method" value="DELETE">
+    </form>
+    <script>
+        $(document).ready(function(){
+         $('.delete-user').on('click', function(){
+              var userId = $(this).data('id');
+            //   $('#delete_log').data('id', userId);
+              $('#mb-delete').modal('show');
+              $('#delete_log').prop({'href': `/deleteUser/${userId}`});
+        });
+        })
+    </script>
     <% function formatDate(dob) {
         // Create a Date object from the DOB string
         const dobDate = new Date(dob);

@@ -1,0 +1,87 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- INCLUDE PAGE HEADER -->
+    <%- include('includes/header.ejs') %>
+</head>
+<body>
+        <!-- START PAGE CONTAINER -->
+    <div class="page-container">
+        
+        <!-- INCLUDE PAGE SIDEBAR -->
+        <%- include('includes/sidebar.ejs') %>
+        
+        <!-- PAGE CONTENT -->
+        <div class="page-content">
+
+            <!-- INCLUDE PAGE TOP -->
+            <%- include('includes/top.ejs') %>
+
+            
+            <script>
+            $( document ).ready(function() {
+                $("#admins").addClass('active');
+            });   
+            function open_msg(link)
+            {
+                $("#delete_log").prop('href',link);
+                $("#mb-delete").modal('show');
+            }
+            </script>
+            
+            <!-- START BREADCRUMB -->
+            <ul class="breadcrumb">
+                <li><a href="#">Dashboard</a></li>
+                <li><a href="#">Activity</a></li>    
+            </ul>
+            <!-- END BREADCRUMB -->
+            
+            <!-- PAGE CONTENT WRAPPER -->
+            <div class="page-content-wrap">
+                <div class="row">                 
+                    <div class="col-md-12">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h3 class="panel-title"><strong>Activity</strong> List</h3>
+                            </div>
+                            <h4 style="color: red;text-align: center;"></h4>
+                            <div class="panel-body">
+                                <div class="table-responsive">
+                                    <table class="table datatable">
+                                        <thead>
+                                            <tr>
+                                                <th>S. No.</th>
+                                                <th>Activity</th>
+                                                <th>Date And Time</th>                                                
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <% for (let i = 0; i < activities.length; i++) { %>
+                                            <tr>
+                                                <td><%= i + 1 %></td>
+                                                <td><%= activities[i].activity %></td>
+                                                <td><%= activities[i].createdAt %></td>                                                                                                
+                                            </tr>
+                                            <% } %>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div> <!-- END panel-body -->
+                        </div> <!-- END panel panel-default -->
+                    </div> <!-- END col-md-6 -->
+                    
+                </div> <!-- END row -->
+            </div> <!-- END page-content-wrap -->
+            <!-- END PAGE CONTENT WRAPPER -->      
+
+        </div>
+        <!-- END PAGE CONTENT -->
+    </div>
+    <!-- END PAGE CONTAINER -->
+
+    <!-- INCLUDE PAGE FOOTER -->
+    <%- include('includes/footer.ejs') %>
+
+</body>
+</html>
