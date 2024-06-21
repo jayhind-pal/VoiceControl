@@ -5,6 +5,7 @@ const bcrypt = require('bcrypt');
 const ejs = require('ejs');
 const moment = require("moment");
 const Mailer = require('./../../helpers/MailHelper');
+const Activity = require("../../models/activity.model.js");
 const mailer = new Mailer();
 
 //login page
@@ -27,7 +28,7 @@ exports.loginSubmit = async (req, res) => {
       if (data && passwordMatched) {
         // Create token
         const token = jwt.sign(
-          { id: data.id, email: data.email },
+          { id: data.id, email: data.email, name: data.name },
           process.env.TOKEN_KEY,
           {
             expiresIn: "2h",
@@ -124,7 +125,7 @@ exports.admins = (req, res) => {
 };
 
 exports.activity = (req, res) => {
-  Admin.getActivity((err, data) => {
+  Activity.getActivity((err, data) => {
     if (err) {
       res.redirect('/login?error=' + trans.lang('message.something_went_wrong'));
       return;
@@ -143,14 +144,16 @@ exports.activity = (req, res) => {
 }
 // Create and Save a new Tutorial
 exports.adminSubmit = async (req, res) => {
-  Admin.findByEmail(req.body.email, async (err, data) => {
+  Admin.findByEmail(req.body.email, async (err, data1) => {
+    console.log("data1", data1, err)
     if (err) {
       if (err.kind !== "not_found") {
         res.redirect('/admins?page=form&id=' + req.body.id + '&error=' + trans.lang('message.something_went_wrong'));
         return;
       }
     } else {
-      if (data.id != req.body.id) {
+      console.log(data1.id, req.body.id)
+      if (data1.id != req.body.id) {
         res.redirect('/admins?page=form&id=' + req.body.id + '&error=' + trans.lang('message.email_already_exists'));
         return;
       }
@@ -171,6 +174,18 @@ exports.adminSubmit = async (req, res) => {
           res.redirect('/admins?page=form&id=' + req.body.id + '&error=' + trans.lang('message.something_went_wrong'));
           return;
         } else {
+          //add activity
+          let activity = `${req.session.user?.name} modified ${record.name} admin`
+          let newActivity = {
+            adminId: req.session.user?.id,
+            activity: activity,
+          }
+          Activity.create(new Activity(newActivity), async (err, data) => {
+            if (err) {
+              res.redirect('/admins?page=form&id=' + req.body.id + '&error=' + trans.lang('message.something_went_wrong'));
+              return;
+            }
+          });
           res.redirect('/admins');
           return;
         }
@@ -181,6 +196,18 @@ exports.adminSubmit = async (req, res) => {
           res.redirect('/admins?page=form&id=' + req.body.id + '&error=' + trans.lang('message.something_went_wrong'));
           return;
         } else {
+          //add activity
+          let activity = `${req.session.user?.name} created ${record.name} admin`
+          let newActivity = {
+            adminId: req.session.user?.id,
+            activity: activity,
+          }
+          Activity.create(new Activity(newActivity), async (err, data) => {
+            if (err) {
+              res.redirect('/admins?page=form&id=' + req.body.id + '&error=' + trans.lang('message.something_went_wrong'));
+              return;
+            }
+          });
           res.redirect('/admins');
           return;
         }
@@ -212,6 +239,19 @@ exports.updateUser = async (req, res) => {
           return;
         } else {
           console.log(data)
+          //add activity
+          let activity = `${req.session.user?.name} modified ${record.name} user`
+          let newActivity = {
+            adminId: req.session.user?.id,
+            activity: activity,
+          }
+          Activity.create(new Activity(newActivity), async (err, data) => {
+            if (err) {
+              res.redirect('/users?page=form&id=' + req.body.id + '&error=' + trans.lang('message.something_went_wrong'));
+              return;
+            }
+          });
+
           res.redirect('/users');
           return;
         }
@@ -221,19 +261,13 @@ exports.updateUser = async (req, res) => {
 }
 
 exports.deleteUser = async (req, res) => {
-  User.findByEmail(req.params.id, async (err, data) => {
+  User.findById(req.params.id, async (err, data1) => {
     if (err) {
       if (err.kind !== "not_found") {
         res.redirect('/users?id=' + req.params.id + '&error=' + trans.lang('message.something_went_wrong'));
         return;
       }
-    } else {
-      if (data.id != req.params.id) {
-        res.redirect('/users?id=' + req.params.id + '&error=' + trans.lang('message.email_already_exists'));
-        return;
-      }
-    }
-
+    } 
     // update delete status in the database
     let obj = { status: 0, deletedAt: new Date() }
     if (req.params.id) {
@@ -243,6 +277,18 @@ exports.deleteUser = async (req, res) => {
           return;
         } else {
           console.log(data)
+           //add activity
+           let activity = `${req.session.user?.name} deleted ${data1.name} user`
+           let newActivity = {
+             adminId: req.session.user?.id,
+             activity: activity,
+           }
+           Activity.create(new Activity(newActivity), async (err, data) => {
+             if (err) {
+               res.redirect('/users?page=form&id=' + req.params.id + '&error=' + trans.lang('message.something_went_wrong'));
+               return;
+             }
+           });
           res.redirect('/users');
           return;
         }
