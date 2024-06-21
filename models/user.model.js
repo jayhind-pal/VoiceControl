@@ -9,7 +9,7 @@ const User = function(fields) {
 };
 
 User.login = (email, result) => {
-    sql.query(`SELECT * FROM users WHERE status=1 AND email = '${email}'`, (err, res) => {
+    sql.query(`SELECT * FROM users WHERE status=1 AND deletedAt IS NULL AND email = '${email}'`, (err, res) => {
       if (err) {
         result(err, null);
         return;
@@ -38,7 +38,7 @@ User.login = (email, result) => {
 };
 
 User.findByEmail = (email, result) => {
-    sql.query(`SELECT * FROM users WHERE email = '${email}'`, (err, res) => {
+    sql.query(`SELECT * FROM users WHERE deletedAt IS NULL AND email = '${email}'`, (err, res) => {
       if (err) {
         result(err, null);
         return;
@@ -52,7 +52,7 @@ User.findByEmail = (email, result) => {
     });
 };
 User.findById = (id, result) => {
-    sql.query(`SELECT * FROM users WHERE id = '${id}'`, (err, res) => {
+    sql.query(`SELECT * FROM users WHERE deletedAt IS NULL AND id = '${id}'`, (err, res) => {
       if (err) {
         result(err, null);
         return;
@@ -69,7 +69,7 @@ User.getAll = (result) => {
   let query = "SELECT * FROM users WHERE deletedAt IS NULL";
   sql.query(query, (err, res) => {
     if (err) {
-      result(null, err);
+      result(err, []);
       return;
     }
     result(null, res);
@@ -95,7 +95,7 @@ User.create = (newUser, result) => {
 };
 User.updateById = (id, User, result) => {
   sql.query(
-    "UPDATE users SET ? WHERE id = ?",
+    "UPDATE users SET ? WHERE deletedAt IS NULL AND id = ?",
     [User, id],
     (err, res) => {
       if (err) {

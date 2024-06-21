@@ -9,26 +9,33 @@ const Activity = require("./../../models/activity.model.js")
 
 exports.login = async (req, res) => {
   User.login(req.body.email, async (err, data) => {
-    if (err) {
-      if (err.kind === "not_found") {
-        res.status(404).send({
-          message: trans.lang('message.user.invalid_credentials')
-        });
+    try {
+      if (err) {
+        if (err.kind === "not_found") {
+          res.status(404).send({
+            message: trans.lang('message.user.invalid_credentials')
+          });
+        } else {
+          res.status(500).send({
+            error: err,
+            message: trans.lang('message.something_went_wrong')
+          });
+        }
       } else {
-        res.status(500).send({
-          error: err,
-          message: trans.lang('message.something_went_wrong')
-        });
+        let passwordMatched = await bcrypt.compare(req.body.password, data.password);
+        if (data && passwordMatched) {
+          res.status(200).json(data);
+        } else {
+          res.status(404).send({
+            message: trans.lang('message.user.invalid_credentials')
+          });
+        }
       }
-    } else {
-      let passwordMatched = await bcrypt.compare(req.body.password, data.password);
-      if (data && passwordMatched) {
-        res.status(200).json(data);
-      } else {
-        res.status(404).send({
-          message: trans.lang('message.user.invalid_credentials')
-        });
-      }
+    } catch (err) {
+      res.status(500).send({
+        error: err,
+        message: trans.lang('message.something_went_wrong')
+      });
     }
   });
 };

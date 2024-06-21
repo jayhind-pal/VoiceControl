@@ -1,31 +1,33 @@
 const nodemailer = require('nodemailer');
 class Mailer {
-    constructor(){
+    constructor() {
         this.transporter = nodemailer.createTransport({
+            service: process.env.MAILER_SERVICE,
             host: process.env.MAILER_HOST,
-            port: 25,
+            port: 465,
+            secure: true,
             auth: {
                 user: process.env.MAILER_USER,
                 pass: process.env.MAILER_PASS
             },
-            tls: {
-                // do not fail on invalid certs
-                rejectUnauthorized: false,
-            },
+            // tls: {
+            //     // do not fail on invalid certs
+            //     rejectUnauthorized: false,
+            // },
         });
-        
+
         this.mailOptions = {
-            from: process.env.FROM_EMAIL                   // sender's gmail
+            from: process.env.FROM_EMAIL                // sender's gmail
         };
     }
 
-    send(to_email,subject,html) {
+    send(to_email, subject, html) {
         this.mailOptions.to = to_email;
         this.mailOptions.subject = subject;
         this.mailOptions.html = html;
         this.transporter.sendMail(this.mailOptions, function (error, info) {
             if (error) {
-                console.log("error is mail sending",error);
+                console.log("error is mail sending", error);
             } else {
                 console.log('Email sent: ' + info.response);
             }

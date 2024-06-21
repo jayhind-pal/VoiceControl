@@ -6,15 +6,14 @@ const Activity = function (fields) {
         this[key] = fields[key];
     }
 };
-Activity.getActivity = (result) => {
-
-    let query = "SELECT * FROM activities";
+Activity.getAll = (result) => {
+    let query = "SELECT * FROM activities ORDER BY createdAt DESC";
     sql.query(query, (err, res) => {
         if (err) {
             result(null, err);
             return;
         }
-        res.forEach((item)=> item.createdAt = moment(item.createdAt).format('MMM DD YYYY HH:mm:ss'))
+        res.forEach((item)=> item.createdAt = moment(item.createdAt).format('MMM DD YYYY, hh:mm A'))
         result(null, res);
     });
 }

@@ -79,11 +79,6 @@ exports.dashboard = (req, res) => {
 //users
 exports.users = (req, res) => {
   User.getAll((err, data) => {
-    if (err) {
-      res.redirect('/login?error=' + trans.lang('message.something_went_wrong'));
-      return;
-    }
-    else {
       let selected = req.query.id;
       let updateUser = data.find(item => item.id === parseInt(selected));
       if (updateUser?.id) updateUser = { ...updateUser, dob: moment(updateUser.dob).format("YYYY-MM-DD") }
@@ -96,7 +91,6 @@ exports.users = (req, res) => {
         updateUser
       });
       return;
-    }
   });
 };
 
@@ -125,7 +119,7 @@ exports.admins = (req, res) => {
 };
 
 exports.activity = (req, res) => {
-  Activity.getActivity((err, data) => {
+  Activity.getAll((err, data) => {
     if (err) {
       res.redirect('/login?error=' + trans.lang('message.something_went_wrong'));
       return;
