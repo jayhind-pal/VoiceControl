@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 21, 2024 at 02:04 PM
+-- Generation Time: Jun 21, 2024 at 04:51 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -46,7 +46,9 @@ INSERT INTO `activities` (`id`, `adminId`, `activity`, `createdAt`, `deletedAt`)
 (4, 1, 'root admin modified albert istein user', '2024-06-21 10:42:52', NULL),
 (6, 1, 'root admin deleted sowel chempi user', '2024-06-21 11:30:20', NULL),
 (7, 1, 'root admin created allen solly admin', '2024-06-21 11:31:38', NULL),
-(8, 1, 'root admin modified allen solly admin', '2024-06-21 11:32:01', NULL);
+(8, 1, 'root admin modified allen solly admin', '2024-06-20 23:32:01', NULL),
+(9, 1, 'root admin deleted albert istein user', '2024-06-21 13:16:57', NULL),
+(10, 1, 'root admin modified John Ngenga user', '2024-06-21 13:28:11', NULL);
 
 -- --------------------------------------------------------
 
@@ -96,7 +98,19 @@ INSERT INTO `email_verification` (`id`, `user_id`, `email`, `entrydt`) VALUES
 (3, 1, 'john@gmail.com', '2023-11-08 10:28:31'),
 (4, 1, 'john@gmail.com', '2023-11-08 10:28:45'),
 (5, 1, 'john@gmail.com', '2023-11-08 10:29:32'),
-(6, 1, 'john@gmail.com', '2023-11-08 10:29:41');
+(6, 1, 'john@gmail.com', '2023-11-08 10:29:41'),
+(7, 2, 'albert@gmail.com', '2024-06-21 13:16:30'),
+(8, 2, 'albert@gmail.com', '2024-06-21 13:17:00'),
+(9, 2, 'albert@gmail.com', '2024-06-21 13:20:45'),
+(10, 2, 'manish.dayama@5exceptions.com', '2024-06-21 13:39:49'),
+(11, 2, 'manish.dayama@5exceptions.com', '2024-06-21 13:46:45'),
+(12, 2, 'manish.dayama@5exceptions.com', '2024-06-21 13:57:18'),
+(13, 2, 'manish.dayama@5exceptions.com', '2024-06-21 14:00:50'),
+(14, 2, 'manish.dayama@5exceptions.com', '2024-06-21 14:01:51'),
+(15, 2, 'manish.dayama@5exceptions.com', '2024-06-21 14:06:46'),
+(16, 2, 'manish.dayama@5exceptions.com', '2024-06-21 14:09:39'),
+(17, 2, 'manish.dayama@5exceptions.com', '2024-06-21 14:36:09'),
+(18, 2, 'manish.dayama@5exceptions.com', '2024-06-21 14:37:54');
 
 -- --------------------------------------------------------
 
@@ -113,7 +127,7 @@ CREATE TABLE `users` (
   `password` text NOT NULL,
   `status` int(11) NOT NULL DEFAULT 1,
   `entrydt` timestamp NOT NULL DEFAULT current_timestamp(),
-  `deletedAt` date DEFAULT NULL
+  `deletedAt` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -122,8 +136,8 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`id`, `name`, `dob`, `zipcode`, `email`, `password`, `status`, `entrydt`, `deletedAt`) VALUES
 (1, 'John Ngenga', '1992-11-26', '452011', 'john@gmail.com', '$2b$10$DM7X/0CBq8WF6mscHRu/PeWLiuAurhqaQdHdV6t1lgg6/zbFBJ4uq', 1, '2023-11-07 12:00:37', NULL),
-(2, 'albert istein', '2024-06-12', '457812', 'albert@gmail.com', '$2b$10$DM7X/0CBq8WF6mscHRu/PeWLiuAurhqaQdHdV6t1lgg6/zbFBJ4uq', 1, '2024-06-20 11:38:55', NULL),
-(3, 'sowel chempi', '2004-06-16', '452050', 'sowel@gmail.co', '$2b$10$DM7X/0CBq8WF6mscHRu/PeWLiuAurhqaQdHdV6t1lgg6/zbFBJ4uq', 0, '2024-06-20 11:39:02', '2024-06-21');
+(2, 'albert istein', '2024-06-12', '457812', 'manish.dayama@5exceptions.com', '$2b$10$uPr65vyMtb4wiW46doGwjOTcACZlMGBKZdR.PbC61AdUZlihKK6p2', 0, '2024-06-20 11:38:55', NULL),
+(3, 'sowel chempi', '2004-06-16', '452050', 'sowel@gmail.co', '$2b$10$DM7X/0CBq8WF6mscHRu/PeWLiuAurhqaQdHdV6t1lgg6/zbFBJ4uq', 0, '2024-06-20 11:39:02', '2024-06-20 18:30:00');
 
 --
 -- Indexes for dumped tables
@@ -162,7 +176,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `activities`
 --
 ALTER TABLE `activities`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `admins`
@@ -174,7 +188,7 @@ ALTER TABLE `admins`
 -- AUTO_INCREMENT for table `email_verification`
 --
 ALTER TABLE `email_verification`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT for table `users`
