@@ -24,7 +24,29 @@ exports.login = async (req, res) => {
       } else {
         let passwordMatched = await bcrypt.compare(req.body.password, data.password);
         if (data && passwordMatched) {
-          res.status(200).json(data);
+          // add activity          
+          User.findByEmail(req.body.email, async (err, data1) => {
+            if (err) {
+              res.status(500).send({
+                message: trans.lang('message.data_not_found')
+              });
+            }
+            else{
+              let activity = `${data1.name} user login`
+              let newActivity = {
+                activity: activity,
+                email: req.body.email
+              }
+              Activity.create(new Activity(newActivity), async (err, data) => {
+                if (err) {
+                  // res.send("error while generating logs");
+                  // return;
+                }
+              });
+            }
+            res.status(200).json(data);
+        })
+
         } else {
           res.status(404).send({
             message: trans.lang('message.user.invalid_credentials')
@@ -77,6 +99,7 @@ exports.signup = async (req, res) => {
               let activity = `${req.body.name} user created`
               let newActivity = {
                 activity: activity,
+                email: req.body.email
               }
               Activity.create(new Activity(newActivity), async (err, data) => {
                 if (err) {

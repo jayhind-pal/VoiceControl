@@ -120,6 +120,7 @@ exports.admins = (req, res) => {
 
 exports.activity = (req, res) => {
   Activity.getAll((err, data) => {
+    const email = req.query.email;
     if (err) {
       res.redirect('/login?error=' + trans.lang('message.something_went_wrong'));
       return;
@@ -131,6 +132,7 @@ exports.activity = (req, res) => {
         error: req.query.error,
         page: req.query.page,
         activities: data,
+        email: email
       });
       return;
     }
@@ -139,7 +141,8 @@ exports.activity = (req, res) => {
 // Create and Save a new Tutorial
 exports.adminSubmit = async (req, res) => {
   Admin.findByEmail(req.body.email, async (err, data1) => {
-    console.log("data1", data1, err)
+    // console.log("data1", data1)
+    // console.log("error", err)
     if (err) {
       if (err.kind !== "not_found") {
         res.redirect('/admins?page=form&id=' + req.body.id + '&error=' + trans.lang('message.something_went_wrong'));

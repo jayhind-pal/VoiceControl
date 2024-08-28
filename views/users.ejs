@@ -117,6 +117,8 @@
                                                 <th>Zipcode</th>
                                                 <th>Update</th>
                                                 <th>Delete</th>
+                                                <th>Activity</th>
+
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -135,6 +137,11 @@
                                                 <td>
                                                     <a href="#" class="mb-control btn btn-primary delete-user" data-id="<%= users[i].id %>">
                                                         <i class="fa fa-trash-o"></i>
+                                                    </a>
+                                                </td>
+                                                <td>
+                                                    <a href="/activity?email=<%= users[i].email %>" class="btn btn-primary " data-email="<%= users[i].email %>">
+                                                        <i class="fa fa-eye"></i>
                                                     </a>
                                                 </td>
                                             </tr>

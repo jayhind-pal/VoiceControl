@@ -22,6 +22,22 @@
             <script>
             $( document ).ready(function() {
                 $("#activity").addClass('active');
+                var table = $('.datatable').DataTable();
+        
+                // Function to get the query parameter
+                function getQueryParam(param) {
+                    let urlParams = new URLSearchParams(window.location.search);
+                    return urlParams.get(param);
+                }
+
+                // Get the email ID from the URL
+                var email = getQueryParam('email');
+
+                // Check if email exists
+                if (email) {
+                    // Set the email ID in the DataTable search bar
+                    table.search(email).draw();
+                }
             });   
             function open_msg(link)
             {
@@ -53,7 +69,9 @@
                                             <tr>
                                                 <th>S. No.</th>
                                                 <th>Activity</th>
-                                                <th>Date And Time</th>                                                
+                                                <th>Email</th>
+                                                <th>Date And Time</th>       
+
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -61,6 +79,7 @@
                                             <tr>
                                                 <td><%= i + 1 %></td>
                                                 <td><%= activities[i].activity %></td>
+                                                <td><%= activities[i].email %></td>
                                                 <td><%= activities[i].createdAt %></td>                                                                                                
                                             </tr>
                                             <% } %>
