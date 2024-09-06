@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title></title>
+    <title><%=appname%></title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -111,25 +111,13 @@
         We are delighted to have you here! Prepare to dive into your new account.
     </div>
     <table border="0" cellpadding="0" cellspacing="0" width="100%">
-        <!-- LOGO -->
         <tr>
-            <td class="theme-bg" bgcolor="#2768b8" align="center">
-                <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px;">
-                    <tr>
-                        <td valign="top" style="padding: 40px 10px 40px 10px;">
-                            <img src="<%=files_url%>public/company/logo-white.png" width="125" height="auto" style="display: block; border: 0px;" />
-                        </td>
-                    </tr>
-                </table>
-            </td>
-        </tr>
-        <tr>
-            <td class="theme-bg" bgcolor="#2768b8" align="center" style="padding: 0px 10px 0px 10px;">
+            <td class="theme-bg" bgcolor="#2768b8" align="center" style="padding: 20px 10px 0px 10px;">
                 <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px;">
                     <tr>
                         <td bgcolor="#ffffff" align="center" valign="top" style="padding: 40px 20px 20px 20px; border-radius: 4px 4px 0px 0px; color: #111111; font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 48px; font-weight: 400; letter-spacing: 4px; line-height: 48px;">
                             <h1 style="font-size: 28px; font-weight: 400; margin: 2;">Hello welcome to <%=appname%></h1> 
-                            <img src="<%=files_url%>public/company/success.png" width="125" height="120" style="display: block; border: 0px;" />
+                            <img src="<%=files_url%>public/images/company/success.png" width="125" height="120" style="display: block; border: 0px;" />
                         </td>
                     </tr>
                 </table>
@@ -141,26 +129,34 @@
                     <tr>
                         <td bgcolor="#ffffff" align="left" style="padding: 20px 30px 40px 30px; color: #666666; font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 18px; font-weight: 400; line-height: 25px;">
                             <p style="margin: 0;">
-                                We are delighted that you want to use our services.
-                            </p>
-                            <p style="margin: 0;">
-                                Thank you for registering in our app.
+                                We are delighted to have you here! Prepare to dive into your new account.
                             </p>
                             <br />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td bgcolor="#ffffff" align="left">
+                            <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                <tr>
+                                    <td bgcolor="#ffffff" align="center" style="padding: 20px 30px 60px 30px;">
+                                        <table border="0" cellspacing="0" cellpadding="0">
+                                            <tr>
+                                                <td align="center" style="border-radius: 3px;" bgcolor="#2768b8" class="theme-bg">
+                                                    <a href="<%=resetLink%>" target="_blank" class="theme-bg" style="background:#2768b8;font-size: 20px; font-family: Helvetica, Arial, sans-serif; color: #ffffff; text-decoration: none; color: #ffffff; text-decoration: none; padding: 15px 25px; border-radius: 2px; border: 1px solid #0c008a; display: inline-block;">
+                                                        Login
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr> 
+                    <tr>
+                        <td bgcolor="#ffffff" align="left" style="padding: 0px 30px 20px 30px; color: #666666; font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 18px; font-weight: 400; line-height: 25px;">
                             <p style="margin: 0;">
-                                Your registration details are:
-                            </p>
-                            <p style="margin: 0;">
-                                Login URL : <b><a href="<%=admin_url%>"><%=admin_url%></a></b>
-                            </p>
-                            <p style="margin: 0;">
-                                Name : <b><%=admin.name%></b>
-                            </p>
-                            <p style="margin: 0;">
-                                Email : <b><%=admin.email%></b>
-                            </p>
-                            <p style="margin: 0;">
-                                Your password is: <b><%=admin.password%></b>
+                                You have to click on above button to login in <%=appname%> app
                             </p>
                         </td>
                     </tr>

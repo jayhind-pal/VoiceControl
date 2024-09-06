@@ -74,7 +74,7 @@ exports.signup = async (req, res) => {
   User.findByEmail(req.body.email, async (err, data) => {
     if (err) {
       if (err.kind === "not_found") {
-        let encPassword = await bcrypt.hash(req.body.password, 10);
+        // let encPassword = await bcrypt.hash(req.body.password, 10);
 
         // Create a User
         const newRecord = new User({
@@ -82,7 +82,7 @@ exports.signup = async (req, res) => {
           dob: req.body.dob,
           zipcode: req.body.zipcode,
           email: req.body.email,
-          password: encPassword,
+          // password: encPassword,
         });
 
         // Save User in the database
@@ -95,6 +95,22 @@ exports.signup = async (req, res) => {
             });
           } else {
             try {
+                emailVerification.create({ user_id: newUser.id, email: newUser.email }, async (err, evdata) => {
+                if (!err) {
+                  const resetLink = base_url + 'api/reset-password?evid=' + evdata.id + '&uid=' + newUser.id + "&email=" + newUser.email;
+                  const html = await ejs.renderFile('./views/mails/email_verification.ejs', {
+                    user: req.body,
+                    resetLink
+                  });
+                  mailer.send(req.body.email, `Welcome to ${global.appname}`, html);
+                }
+                else{
+                res.status(500).send({
+                  error: err,
+                  message: trans.lang('message.something_went_wrong')
+                });
+                }
+              });
               //add activity
               let activity = `${req.body.name} user created`
               let newActivity = {
@@ -153,7 +169,6 @@ exports.forgotPassword = async (req, res) => {
             resetLink
           });
           mailer.send(req.body.email, `Welcome to ${global.appname}`, html);
-
           res.send({ message: "We have sent a Reset password link to your email - " + req.body.email, resetLink });
           return;
         }

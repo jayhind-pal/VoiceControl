@@ -10,7 +10,8 @@ const PORT = process.env.PORT;
 
 //global
 global.appname = "Voice Control";
-global.base_url = `http://localhost:${PORT}/`;
+// global.base_url = `http://localhost:${PORT}/`;
+global.base_url = `https://flikpro.com/`;
 global.web_url = '';//used to redirect on front-end like email verification
 global.files_url = base_url;
 global.__lang_path = __dirname + "/" + 'language/';
@@ -44,7 +45,6 @@ app.use(session({
   saveUninitialized: true,
   cookie: { secure: false } // Set secure to true for HTTPS
 }));
-
 
 //routes
 require('./routes/api.js')(app);

@@ -2,9 +2,9 @@ const nodemailer = require('nodemailer');
 class Mailer {
     constructor() {
         this.transporter = nodemailer.createTransport({
-            service: process.env.MAILER_SERVICE,
+            // service: process.env.MAILER_SERVICE,
             host: process.env.MAILER_HOST,
-            port: 465,
+            port: process.env.MAIL_PORT,
             secure: true,
             auth: {
                 user: process.env.MAILER_USER,
@@ -12,12 +12,12 @@ class Mailer {
             },
             // tls: {
             //     // do not fail on invalid certs
-            //     rejectUnauthorized: false,
+            //     rejectUnauthorized: false
             // },
         });
 
         this.mailOptions = {
-            from: process.env.FROM_EMAIL                // sender's gmail
+            from: `"Flikpro"`+process.env.FROM_EMAIL       // sender's gmail
         };
     }
 

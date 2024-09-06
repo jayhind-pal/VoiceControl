@@ -140,77 +140,89 @@ exports.activity = (req, res) => {
 }
 // Create and Save a new Tutorial
 exports.adminSubmit = async (req, res) => {
-  Admin.findByEmail(req.body.email, async (err, data1) => {
-    // console.log("data1", data1)
-    // console.log("error", err)
-    if (err) {
-      if (err.kind !== "not_found") {
-        res.redirect('/admins?page=form&id=' + req.body.id + '&error=' + trans.lang('message.something_went_wrong'));
-        return;
-      }
-    } else {
-      console.log(data1.id, req.body.id)
-      if (data1.id != req.body.id) {
-        res.redirect('/admins?page=form&id=' + req.body.id + '&error=' + trans.lang('message.email_already_exists'));
-        return;
-      }
-    }
-
-    // Save Admin in the database
-    let record = req.body;
-    record.permissions = record.permissions.join();
-    if (req.body.password !== '') {
-      record.password = await bcrypt.hash(req.body.password, 10);
-    } else {
-      delete record.password;
-    }
-
-    if (req.body.id) {
-      Admin.updateById(req.body.id, new Admin(record), async (err, data) => {
-        if (err) {
+  if(req.body.name && req.body.email && req.body.password) {
+    Admin.findByEmail(req.body.email, async (err, data1) => {
+      // console.log("data1", data1,"error", err)
+      if (err) {
+        if (err.kind !== "not_found") {
           res.redirect('/admins?page=form&id=' + req.body.id + '&error=' + trans.lang('message.something_went_wrong'));
           return;
-        } else {
-          //add activity
-          let activity = `${req.session.user?.name} modified ${record.name} admin`
-          let newActivity = {
-            adminId: req.session.user?.id,
-            activity: activity,
-          }
-          Activity.create(new Activity(newActivity), async (err, data) => {
-            if (err) {
-              res.redirect('/admins?page=form&id=' + req.body.id + '&error=' + trans.lang('message.something_went_wrong'));
-              return;
-            }
-          });
-          res.redirect('/admins');
+        }
+      } else {
+        if (data1.id != req.body.id) {
+          res.redirect('/admins?page=form&id=' + req.body.id + '&error=' + trans.lang('message.email_already_exists'));
           return;
         }
+      }
+      // Save Admin in the database
+      let adminPermissions = req.body.permissions.join();
+      // if (req.body.password !== '') {
+        // record.password = await bcrypt.hash(req.body.password, 10);
+        let encPassword = await bcrypt.hash(req.body.password, 10);
+
+      // } else {
+      //   delete record.password;
+      // }
+      const newRecord = new Admin({
+        name: req.body.name,
+        email: req.body.email,
+        password: encPassword,
+        permissions: adminPermissions,
       });
-    } else {
-      Admin.create(new Admin(record), async (err, data) => {
-        if (err) {
-          res.redirect('/admins?page=form&id=' + req.body.id + '&error=' + trans.lang('message.something_went_wrong'));
-          return;
-        } else {
-          //add activity
-          let activity = `${req.session.user?.name} created ${record.name} admin`
-          let newActivity = {
-            adminId: req.session.user?.id,
-            activity: activity,
-          }
-          Activity.create(new Activity(newActivity), async (err, data) => {
-            if (err) {
-              res.redirect('/admins?page=form&id=' + req.body.id + '&error=' + trans.lang('message.something_went_wrong'));
-              return;
+      if (req.body.id) {
+        Admin.updateById(req.body.id, newRecord, async (err, data) => {
+          if (err) {
+            res.redirect('/admins?page=form&id=' + req.body.id + '&error=' + trans.lang('message.something_went_wrong'));
+            return;
+          } else {
+            //add activity
+            let activity = `${req.session.user?.name} modified ${req.body.name} admin`
+            let newActivity = {
+              adminId: req.session.user?.id,
+              activity: activity,
+              email: req.session.user?.email
             }
-          });
-          res.redirect('/admins');
-          return;
-        }
-      });
-    }
-  });
+            Activity.create(new Activity(newActivity), async (err, data) => {
+              if (err) {
+                res.redirect('/admins?page=form&id=' + req.body.id + '&error=' + trans.lang('message.something_went_wrong'));
+                return;
+              }
+            });
+            res.redirect('/admins');
+            return;
+          }
+        });
+      } else {
+          Admin.create(newRecord, async (err, newAdmin) => {
+          if (err) {
+            res.redirect('/admins?page=form&id=' + req.body.id + '&error=' + trans.lang('message.something_went_wrong'));
+            return;
+          } else {
+            //add activity
+            let activity = `${req.session.user?.name} created ${req.body.name} admin`
+            let newActivity = {
+              adminId: req.session.user?.id,
+              activity: activity,
+              email: req.session.user?.email
+
+            }
+            Activity.create(new Activity(newActivity), async (err, data) => {
+              if (err) {
+                // res.redirect('/admins?page=form&id=' + req.body.id + '&error=' + trans.lang('message.something_went_wrong'));
+                // return;
+              }
+            });
+            res.redirect('/admins');
+            return;
+          }
+        });
+      }
+    });
+  }
+  else{
+    res.redirect('/admins?page=form&id=' + req.body.id + '&error=' + trans.lang('message.required'));
+    return;
+  }
 };
 
 exports.updateUser = async (req, res) => {
@@ -235,12 +247,12 @@ exports.updateUser = async (req, res) => {
           res.redirect('/users?page=form&id=' + req.body.id + '&error=' + trans.lang('message.something_went_wrong'));
           return;
         } else {
-          console.log(data)
           //add activity
           let activity = `${req.session.user?.name} modified ${record.name} user`
           let newActivity = {
             adminId: req.session.user?.id,
             activity: activity,
+            email: req.session.user?.email
           }
           Activity.create(new Activity(newActivity), async (err, data) => {
             if (err) {
@@ -273,12 +285,12 @@ exports.deleteUser = async (req, res) => {
           res.redirect('/users?id=' + req.params.id + '&error=' + trans.lang('message.something_went_wrong'));
           return;
         } else {
-          console.log(data)
            //add activity
            let activity = `${req.session.user?.name} deleted ${data1.name} user`
            let newActivity = {
              adminId: req.session.user?.id,
              activity: activity,
+             email: req.session.user?.email
            }
            Activity.create(new Activity(newActivity), async (err, data) => {
              if (err) {
@@ -293,3 +305,4 @@ exports.deleteUser = async (req, res) => {
     }
   });
 }
+
