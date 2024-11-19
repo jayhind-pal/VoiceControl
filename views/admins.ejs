@@ -60,14 +60,14 @@
                                                     <div class="input-group">
                                                         <span class="input-group-addon"><span class="fa fa-lock"></span></span>
                                                         <input type="hidden" name="id" value="<%=admin?.id%>">
-                                                        <input type="text" name="name" class="form-control" placeholder='Enter name' value="<%=admin?.name%>">
+                                                        <input type="text" name="name" class="form-control" placeholder='Enter Name' value="<%=admin?.name%>">
                                                     </div>                                
                                                 </div>
                                                 <div class="form-group">
                                                     <label>Email</label>
                                                     <div class="input-group">
                                                         <span class="input-group-addon"><span class="fa fa-envelope"></span></span>
-                                                        <input type="email" name="email" id="email" class="form-control" placeholder='Enter Email' value="<%=admin?.email%>">
+                                                        <input type="email" name="email" id="email" class="form-control"  placeholder='Enter Email' readonly value="<%=admin?.email%>">
                                                     </div>                                
                                                 </div>
                                                 <div class="form-group">
@@ -119,6 +119,15 @@
                                                                 <td>
                                                                     <label class="switch switch-small">
                                                                         <input type="checkbox" name="permissions[]" value="activity" <%=admin?.permissions?.includes('activity') ? 'checked':''%>/>
+                                                                        <span></span>
+                                                                    </label>     
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>JsonUpdate</th>
+                                                                <td>
+                                                                    <label class="switch switch-small">
+                                                                        <input type="checkbox" name="permissions[]" value="jsonUpdate" <%=admin?.permissions?.includes('jsonUpdate') ? 'checked':''%>/>
                                                                         <span></span>
                                                                     </label>     
                                                                 </td>

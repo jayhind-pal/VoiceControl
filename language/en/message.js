@@ -11,6 +11,7 @@ module.exports = {
   not_found: "Data not found",
   required: "All fields are required.",
   password_not_matched: "Confirm password does't matched.",
+  json_file_updated: "JSON file updated successfully.",
   admin: {
     invalid_credentials: "You have entered wrong credentials.",
     login_to_continue: "Please login to continue.",
@@ -25,5 +26,6 @@ module.exports = {
   category: {
     category_deleted: "Category was deleted successfully!",
   },
+  emailRequired: "Email is required.",
   
 };

@@ -7,6 +7,8 @@ const moment = require("moment");
 const Mailer = require('./../../helpers/MailHelper');
 const Activity = require("../../models/activity.model.js");
 const mailer = new Mailer();
+const fs = require('fs');
+const path = require('path');
 
 //login page
 exports.login = (req, res) => {
@@ -104,7 +106,6 @@ exports.admins = (req, res) => {
     else {
       let selected = req.query.id;
       const admin = data.find(item => item.id === parseInt(selected));
-
       res.render('admins.ejs', {
         appName: global.appname,
         user: req.session.user,
@@ -142,7 +143,6 @@ exports.activity = (req, res) => {
 exports.adminSubmit = async (req, res) => {
   if(req.body.name && req.body.email && req.body.password) {
     Admin.findByEmail(req.body.email, async (err, data1) => {
-      // console.log("data1", data1,"error", err)
       if (err) {
         if (err.kind !== "not_found") {
           res.redirect('/admins?page=form&id=' + req.body.id + '&error=' + trans.lang('message.something_went_wrong'));
@@ -163,6 +163,7 @@ exports.adminSubmit = async (req, res) => {
       // } else {
       //   delete record.password;
       // }
+     
       const newRecord = new Admin({
         name: req.body.name,
         email: req.body.email,
@@ -170,17 +171,26 @@ exports.adminSubmit = async (req, res) => {
         permissions: adminPermissions,
       });
       if (req.body.id) {
-        Admin.updateById(req.body.id, newRecord, async (err, data) => {
+        // Sort both arrays for comparison
+       Admin.updateById(req.body.id, newRecord, async (err, data) => {
           if (err) {
             res.redirect('/admins?page=form&id=' + req.body.id + '&error=' + trans.lang('message.something_went_wrong'));
             return;
           } else {
-            //add activity
-            let activity = `${req.session.user?.name} modified ${req.body.name} admin`
+            //add activity 
+            let activity;
+            if(req.body.id == req.session.user?.id)
+            {
+             activity = `Admin with email ${req.session.user?.email} has updated his info`
+            }
+            else
+            {              
+             activity = `Admin with email ${req.session.user?.email} has updated info of other admin with email ${ req.body.email}`
+            }
             let newActivity = {
               adminId: req.session.user?.id,
               activity: activity,
-              email: req.session.user?.email
+              email: req.body.email
             }
             Activity.create(new Activity(newActivity), async (err, data) => {
               if (err) {
@@ -226,47 +236,84 @@ exports.adminSubmit = async (req, res) => {
 };
 
 exports.updateUser = async (req, res) => {
-  User.findByEmail(req.body.email, async (err, data) => {
-    if (err) {
-      if (err.kind !== "not_found") {
-        res.redirect('/users?page=form&id=' + req.body.id + '&error=' + trans.lang('message.something_went_wrong'));
-        return;
-      }
-    } else {
-      if (data.id != req.body.id) {
-        res.redirect('/users?page=form&id=' + req.body.id + '&error=' + trans.lang('message.email_already_exists'));
-        return;
-      }
-    }
-
-    // Update user in the database
-    let record = req.body;
-    if (req.body.id) {
-      User.updateById(req.body.id, new User(record), async (err, data) => {
+  if(req.body.name && req.body.email && req.body.zipcode && req.body.dob)
+  {
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Basic email regex pattern
+    console.log("test email", req.body.email, (emailPattern.test(req.body.email)));
+    if (emailPattern.test(req.body.email)) 
+    {  
+      User.findById(req.body.id, async (err, data) => {
         if (err) {
-          res.redirect('/users?page=form&id=' + req.body.id + '&error=' + trans.lang('message.something_went_wrong'));
-          return;
-        } else {
-          //add activity
-          let activity = `${req.session.user?.name} modified ${record.name} user`
-          let newActivity = {
-            adminId: req.session.user?.id,
-            activity: activity,
-            email: req.session.user?.email
+          if (err.kind !== "not_found") {
+            res.redirect('/users?page=form&id=' + req.body.id + '&error=' + trans.lang('message.something_went_wrong'));
+            return;
           }
-          Activity.create(new Activity(newActivity), async (err, data) => {
+        } else {
+          if (data.id != req.body.id) {
+            res.redirect('/users?page=form&id=' + req.body.id + '&error=' + trans.lang('message.email_already_exists'));
+            return;
+          }
+        }
+
+        // Update user in the database
+        let record = req.body;
+        let activity = '';
+        const dob1 = moment(data.dob).format("YYYY-MM-DD");
+        if(data.email != record.email)
+        {
+          if(data.name != record.name || data.zipcode != record.zipcode || dob1 != record.dob)
+          {
+            activity = `Admin with email ${req.session.user?.email} has updated info and email of user ${data.email} to new email ${record.email}`        
+          }
+          else
+          {
+
+            activity = `Admin with email ${req.session.user?.email} has updated email of user ${data.email} to new email ${record.email}`
+          }
+        }
+        else
+        {
+          activity = `Admin with email ${req.session.user?.email} has updated info of user with email ${data.email}`
+        }
+
+
+        if (req.body.id) {
+          User.updateById(req.body.id, new User(record), async (err, data) => {
             if (err) {
               res.redirect('/users?page=form&id=' + req.body.id + '&error=' + trans.lang('message.something_went_wrong'));
               return;
+            } else {
+              //add activity
+
+
+              let newActivity = {
+                adminId: req.session.user?.id,
+                activity: activity,
+                email: req.session.user?.email
+              }
+              Activity.create(new Activity(newActivity), async (err, data) => {
+                if (err) {
+                  res.redirect('/users?page=form&id=' + req.body.id + '&error=' + trans.lang('message.something_went_wrong'));
+                  return;
+                }
+              });
+
+              res.redirect('/users');
+              return;
             }
           });
-
-          res.redirect('/users');
-          return;
         }
       });
-    }
-  });
+    } else {
+      res.redirect('/users?page=form&id=' + req.body.id + '&error=' + trans.lang('message.emailRequired'));
+      return;
+    }  
+  }
+  else{
+    res.redirect('/users?page=form&id=' + req.body.id + '&error=' + trans.lang('message.required'));
+    return;
+  }
+
 }
 
 exports.deleteUser = async (req, res) => {
@@ -286,7 +333,7 @@ exports.deleteUser = async (req, res) => {
           return;
         } else {
            //add activity
-           let activity = `${req.session.user?.name} deleted ${data1.name} user`
+           let activity = `Admin with email ${req.session.user?.name} has deleted the account of user with email ${data1.name}`           
            let newActivity = {
              adminId: req.session.user?.id,
              activity: activity,
@@ -305,4 +352,77 @@ exports.deleteUser = async (req, res) => {
     }
   });
 }
+
+exports.jsonEditor = async (req, res) => {
+  Admin.getAll((err, data) => {
+    if (err) {
+      res.redirect('/login?error=' + trans.lang('message.something_went_wrong'));
+      return;
+    }
+    else {
+      // Read the JSON file
+      let selected = req.query.id;
+      const jsonFile = data.find(item => item.id === parseInt(selected));
+
+          const filepath =  __json_path+'/public/commands/FlikProdb.json';
+          fs.readFile(filepath, 'utf-8', (err, data) => {
+            if (err) {
+                console.error('Error reading the JSON file:', err);
+                res.status(500).send('Internal Server Error');
+                return;
+            }
+            const jsonData = JSON.parse(data);
+             res.render('jsonEditor.ejs', { jsonData: jsonData,appName: global.appname,
+              user: req.session.user,
+              error: req.query.error || null,
+              page: req.query.page || null,
+              jsonFile: jsonFile
+              // fileUpdateMessage: req.query.file_update || null
+              });
+        });
+      return;
+    }
+  });
+}
+
+exports.saveJson = async (req, res) => {
+    try {
+      const updatedJsonData = req.body.jsonData; // Get the updated JSON data from the request body  
+      const parsedData = JSON.parse(updatedJsonData);    
+      const filepath =  __json_path+'/public/commands/FlikProdb.json';
+  
+      // Write the updated JSON data back to the file
+      fs.writeFile(filepath, JSON.stringify(parsedData, null, 2), (err) => {
+        if (err) {
+          console.error('Error writing to JSON file:', err);
+          res.status(500).send('Internal Server Error');
+          return;
+        }  
+        else{
+          //add activity
+          let activity = `Admin with email ${req.session.user?.email} has updated json commands`
+          let newActivity = {
+            adminId: req.session.user?.id,
+            activity: activity,
+            email: req.session.user?.email
+
+          }
+          Activity.create(new Activity(newActivity), async (err, data) => {
+            if (err) {
+              // res.redirect('/admins?page=form&id=' + req.body.id + '&error=' + trans.lang('message.something_went_wrong'));
+              // return;
+            }
+          });
+          res.redirect('/activity');
+          return;
+        }
+      });
+    } catch (error) {
+      console.error('Error parsing JSON data:', error);
+      res.status(400).send('Invalid JSON format');
+    }
+}
+
+
+
 

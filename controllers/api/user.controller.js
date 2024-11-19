@@ -32,7 +32,8 @@ exports.login = async (req, res) => {
               });
             }
             else{
-              let activity = `${data1.name} user login`
+              
+              let activity = `User with email ${req.body.email} has logged in to the app`
               let newActivity = {
                 activity: activity,
                 email: req.body.email
@@ -102,7 +103,7 @@ exports.signup = async (req, res) => {
                     user: req.body,
                     resetLink
                   });
-                  mailer.send(req.body.email, `Welcome to ${global.appname}`, html);
+                  mailer.send(req.body.email, `Welcome to ${global.appname}! Confirm Your Email & Set Up Your Account`, html);
                 }
                 else{
                 res.status(500).send({
@@ -111,8 +112,8 @@ exports.signup = async (req, res) => {
                 });
                 }
               });
-              //add activity
-              let activity = `${req.body.name} user created`
+              //add activity              
+              let activity = `User with email ${req.body.email} registered himself into the system`
               let newActivity = {
                 activity: activity,
                 email: req.body.email
@@ -168,7 +169,7 @@ exports.forgotPassword = async (req, res) => {
             user: req.body,
             resetLink
           });
-          mailer.send(req.body.email, `Welcome to ${global.appname}`, html);
+          mailer.send(req.body.email, `Welcome to ${global.appname}! Confirm Your Email & Set Up Your Account`, html);
           res.send({ message: "We have sent a Reset password link to your email - " + req.body.email, resetLink });
           return;
         }
@@ -221,6 +222,18 @@ exports.resetPasswordSubmit = async (req, res) => {
       if (err) {
         res.redirect('/api/reset-password?evid=' + req.body.evid + '&uid=' + req.body.uid + "&email=" + req.body.email + '&error=' + trans.lang('message.something_went_wrong'));
       } else {
+        
+        let activity = `User with email ${req.body.email} has reset his password`
+        let newActivity = {
+          activity: activity,
+          email: req.body.email
+        }
+        Activity.create(new Activity(newActivity), async (err, data) => {
+          if (err) {
+            // res.send("error while generating logs");
+            // return;
+          }
+        });
         emailVerification.delete(req.body.evid, (err, data) => { });
         res.redirect('/api/success');
       }

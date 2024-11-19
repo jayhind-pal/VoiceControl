@@ -19,6 +19,10 @@ module.exports = app => {
     router.post("/adminSubmit", admins_controller.adminSubmit);    
     router.post("/updateUser",admins_controller.updateUser);
     router.get("/deleteUser/:id",admins_controller.deleteUser)
+    router.get("/jsonEditor", admins_controller.jsonEditor);
+    router.post("/saveJson", admins_controller.saveJson);
+
+
     
     app.use('/', router);
 };

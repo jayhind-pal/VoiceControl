@@ -9,13 +9,15 @@ env("./.env");
 const PORT = process.env.PORT;
 
 //global
-global.appname = "Voice Control";
+global.appname = "FlikPro";
 // global.base_url = `http://localhost:${PORT}/`;
-global.base_url = `https://flikpro.com/`;
+global.base_url = `https://admin.flikpro.com/`;
 global.web_url = '';//used to redirect on front-end like email verification
 global.files_url = base_url;
 global.__lang_path = __dirname + "/" + 'language/';
 global.trans = require('./helpers/LanguageHelper');
+global.__json_path = __dirname;
+
 
 app.use(function (req, res, next) {
     global.currentLang = (req.headers.lang === undefined || req.headers.lang === '') ? 'en' : req.headers.lang;
@@ -33,6 +35,9 @@ app.use(bodyParser.urlencoded({extended: true}));
 //files url
 app.use(express.static('public')); 
 app.use('/public', express.static('public'));
+
+app.set('view engine', 'ejs');
+
 
 
 // Use the 'cookie-parser' middleware to parse cookies.

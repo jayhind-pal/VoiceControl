@@ -1,0 +1,56 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- INCLUDE PAGE HEADER -->
+    <%- include('includes/header.ejs') %>
+    <style>
+        textarea {
+            width: 100%;
+            height: 500px;
+        }
+    </style>
+</head>
+<body>
+        <!-- START PAGE CONTAINER -->
+    <div class="page-container">
+        
+        <!-- INCLUDE PAGE SIDEBAR -->
+        <%- include('includes/sidebar.ejs') %>
+        
+        <!-- PAGE CONTENT -->
+        <div class="page-content">
+
+            <!-- INCLUDE PAGE TOP -->
+            <%- include('includes/top.ejs') %>
+        
+            <!-- START BREADCRUMB -->
+            <ul class="breadcrumb">
+                <li><a href="#">Dashboard</a></li>
+                <li><a href="#">JsonFile</a></li>    
+            </ul>
+            <!-- END BREADCRUMB -->
+            
+            <!-- PAGE CONTENT WRAPPER -->
+            <div class="page-content-wrap">
+              <div class ="col-md-12">
+                <h3>Edit JSON Data</h3>                
+                 <!-- Display the JSON in a textarea for editing -->
+                <form action="/saveJson" class="form-horizontal" method="post">
+                    <textarea name="jsonData"><%= JSON.stringify(jsonData, null, 2) %></textarea>
+                    <button type="submit" class="btn btn-primary">Update</button>
+                </form>
+              </div>
+            </div> <!-- END page-content-wrap -->
+            <!-- END PAGE CONTENT WRAPPER -->      
+
+        </div>
+        <!-- END PAGE CONTENT -->
+    </div>
+    <!-- END PAGE CONTAINER -->
+
+    <!-- INCLUDE PAGE FOOTER -->
+    <%- include('includes/footer.ejs') %>
+
+</body>
+</html>

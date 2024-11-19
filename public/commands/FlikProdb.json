@@ -1,0 +1,558 @@
+{
+  "sqlite_sequence": [
+    {
+      "name": "category",
+      "seq": 6
+    },
+    {
+      "name": "type",
+      "seq": 18
+    },
+    {
+      "name": "command",
+      "seq": 73
+    }
+  ],
+  "category": [
+    {
+      "id": 1,
+      "categoryName": "Global Commands"
+    },
+    {
+      "id": 2,
+      "categoryName": "Home Screen Commands"
+    },
+    {
+      "id": 3,
+      "categoryName": "Take Photo Screen Commands"
+    },
+    {
+      "id": 4,
+      "categoryName": "Save Photo Screen Commands"
+    },
+    {
+      "id": 5,
+      "categoryName": "Record Video Screen Commands"
+    },
+    {
+      "id": 6,
+      "categoryName": "Save Video Screen Commands"
+    }
+  ],
+  "type": [
+    {
+      "id": 1,
+      "typeName": "Open FlikPro",
+      "categoryID": 1
+    },
+    {
+      "id": 3,
+      "typeName": "Open Video",
+      "categoryID": 2
+    },
+    {
+      "id": 4,
+      "typeName": "Open Camera",
+      "categoryID": 2
+    },
+    {
+      "id": 5,
+      "typeName": "Take Photo",
+      "categoryID": 3
+    },
+    {
+      "id": 6,
+      "typeName": "Change Camera",
+      "categoryID": 3
+    },
+    {
+      "id": 7,
+      "typeName": "Turn Camera Off",
+      "categoryID": 3
+    },
+    {
+      "id": 8,
+      "typeName": "Save Photo",
+      "categoryID": 4
+    },
+    {
+      "id": 9,
+      "typeName": "Delete Photo",
+      "categoryID": 4
+    },
+    {
+      "id": 10,
+      "typeName": "Start Video",
+      "categoryID": 5
+    },
+    {
+      "id": 11,
+      "typeName": "Pause Video",
+      "categoryID": 5
+    },
+    {
+      "id": 12,
+      "typeName": "Resume Video",
+      "categoryID": 5
+    },
+    {
+      "id": 13,
+      "typeName": "Stop Video",
+      "categoryID": 5
+    },
+    {
+      "id": 14,
+      "typeName": "Change Camera",
+      "categoryID": 5
+    },
+    {
+      "id": 15,
+      "typeName": "Turn Video Off",
+      "categoryID": 5
+    },
+    {
+      "id": 16,
+      "typeName": "Save Video",
+      "categoryID": 6
+    },
+    {
+      "id": 17,
+      "typeName": "Delete Video",
+      "categoryID": 6
+    }
+  ],
+  "command": [
+    {
+      "id": 1,
+      "commandName": "Open FlikPro",
+      "typeID": 1,
+      "isEditable": 0
+    },
+    {
+      "id": 2,
+      "commandName": "Open FlikPro App",
+      "typeID": 1,
+      "isEditable": 0
+    },
+    {
+      "id": 3,
+      "commandName": "Open the FlikPro",
+      "typeID": 1,
+      "isEditable": 0
+    },
+    {
+      "id": 4,
+      "commandName": "Open the FlikPro App",
+      "typeID": 1,
+      "isEditable": 0
+    },
+    {
+      "id": 6,
+      "commandName": "Open FlikPro Video",
+      "typeID": 3,
+      "isEditable": 0
+    },
+    {
+      "id": 8,
+      "commandName": "Open Video",
+      "typeID": 3,
+      "isEditable": 0
+    },
+    {
+      "id": 9,
+      "commandName": "Open FlikPro Camera",
+      "typeID": 4,
+      "isEditable": 0
+    },
+    {
+      "id": 10,
+      "commandName": "Open Camera",
+      "typeID": 4,
+      "isEditable": 0
+    },
+    {
+      "id": 11,
+      "commandName": "Take FlikPro Photo",
+      "typeID": 5,
+      "isEditable": 0
+    },
+    {
+      "id": 12,
+      "commandName": "Take Photo",
+      "typeID": 5,
+      "isEditable": 0
+    },
+    {
+      "id": 13,
+      "commandName": "Take FlikPro Picture",
+      "typeID": 5,
+      "isEditable": 0
+    },
+    {
+      "id": 14,
+      "commandName": "Take Picture",
+      "typeID": 5,
+      "isEditable": 0
+    },
+    {
+      "id": 15,
+      "commandName": "Change FlikPro Camera",
+      "typeID": 6,
+      "isEditable": 0
+    },
+    {
+      "id": 16,
+      "commandName": "Change Camera",
+      "typeID": 6,
+      "isEditable": 0
+    },
+    {
+      "id": 17,
+      "commandName": "Switch FlikPro Camera",
+      "typeID": 6,
+      "isEditable": 0
+    },
+    {
+      "id": 18,
+      "commandName": "Switch Camera",
+      "typeID": 6,
+      "isEditable": 0
+    },
+    {
+      "id": 19,
+      "commandName": "Turn Camera Off",
+      "typeID": 7,
+      "isEditable": 0
+    },
+    {
+      "id": 20,
+      "commandName": "Save FlikPro Photo",
+      "typeID": 8,
+      "isEditable": 0
+    },
+    {
+      "id": 21,
+      "commandName": "Save Photo",
+      "typeID": 8,
+      "isEditable": 0
+    },
+    {
+      "id": 22,
+      "commandName": "Save FlikPro Picture",
+      "typeID": 8,
+      "isEditable": 0
+    },
+    {
+      "id": 23,
+      "commandName": "Save Picture",
+      "typeID": 8,
+      "isEditable": 0
+    },
+    {
+      "id": 24,
+      "commandName": "Delete FlikPro Photo",
+      "typeID": 9,
+      "isEditable": 0
+    },
+    {
+      "id": 25,
+      "commandName": "Delete Photo",
+      "typeID": 9,
+      "isEditable": 0
+    },
+    {
+      "id": 26,
+      "commandName": "Delete FlikPro Picture",
+      "typeID": 9,
+      "isEditable": 0
+    },
+    {
+      "id": 27,
+      "commandName": "Delete Picture",
+      "typeID": 9,
+      "isEditable": 0
+    },
+    {
+      "id": 28,
+      "commandName": "Start FlikPro Video",
+      "typeID": 10,
+      "isEditable": 0
+    },
+    {
+      "id": 29,
+      "commandName": "Start Video",
+      "typeID": 10,
+      "isEditable": 0
+    },
+    {
+      "id": 30,
+      "commandName": "Record FlikPro Video",
+      "typeID": 10,
+      "isEditable": 0
+    },
+    {
+      "id": 31,
+      "commandName": "Record Video",
+      "typeID": 10,
+      "isEditable": 0
+    },
+    {
+      "id": 32,
+      "commandName": "Start FlikPro Recording",
+      "typeID": 10,
+      "isEditable": 0
+    },
+    {
+      "id": 33,
+      "commandName": "Start Recording",
+      "typeID": 10,
+      "isEditable": 0
+    },
+    {
+      "id": 34,
+      "commandName": "Pause FlikPro Video",
+      "typeID": 11,
+      "isEditable": 0
+    },
+    {
+      "id": 35,
+      "commandName": "Pause Video",
+      "typeID": 11,
+      "isEditable": 0
+    },
+    {
+      "id": 36,
+      "commandName": "Halt FlikPro Video",
+      "typeID": 11,
+      "isEditable": 0
+    },
+    {
+      "id": 37,
+      "commandName": "Halt Video",
+      "typeID": 11,
+      "isEditable": 0
+    },
+    {
+      "id": 38,
+      "commandName": "Start FlikPro Video",
+      "typeID": 12,
+      "isEditable": 0
+    },
+    {
+      "id": 39,
+      "commandName": "Start Video",
+      "typeID": 12,
+      "isEditable": 0
+    },
+    {
+      "id": 40,
+      "commandName": "Record FlikPro Video",
+      "typeID": 12,
+      "isEditable": 0
+    },
+    {
+      "id": 41,
+      "commandName": "Record Video",
+      "typeID": 12,
+      "isEditable": 0
+    },
+    {
+      "id": 42,
+      "commandName": "Start FlikPro Recording",
+      "typeID": 12,
+      "isEditable": 0
+    },
+    {
+      "id": 43,
+      "commandName": "Start Recording",
+      "typeID": 12,
+      "isEditable": 0
+    },
+    {
+      "id": 44,
+      "commandName": "Stop FlikPro Video",
+      "typeID": 13,
+      "isEditable": 0
+    },
+    {
+      "id": 45,
+      "commandName": "Stop Video",
+      "typeID": 13,
+      "isEditable": 0
+    },
+    {
+      "id": 46,
+      "commandName": "Stop FlikPro Recording",
+      "typeID": 13,
+      "isEditable": 0
+    },
+    {
+      "id": 47,
+      "commandName": "Stop Recording",
+      "typeID": 13,
+      "isEditable": 0
+    },
+    {
+      "id": 49,
+      "commandName": "Change FlikPro Camera",
+      "typeID": 14,
+      "isEditable": 0
+    },
+    {
+      "id": 50,
+      "commandName": "Change Camera",
+      "typeID": 14,
+      "isEditable": 0
+    },
+    {
+      "id": 51,
+      "commandName": "Switch FlikPro Camera",
+      "typeID": 14,
+      "isEditable": 0
+    },
+    {
+      "id": 52,
+      "commandName": "Switch Camera",
+      "typeID": 14,
+      "isEditable": 0
+    },
+    {
+      "id": 53,
+      "commandName": "Turn Video Off",
+      "typeID": 15,
+      "isEditable": 0
+    },
+    {
+      "id": 54,
+      "commandName": "Save FlikPro Video",
+      "typeID": 16,
+      "isEditable": 0
+    },
+    {
+      "id": 55,
+      "commandName": "Save Video",
+      "typeID": 16,
+      "isEditable": 0
+    },
+    {
+      "id": 56,
+      "commandName": "Save FlikPro Recording",
+      "typeID": 16,
+      "isEditable": 0
+    },
+    {
+      "id": 57,
+      "commandName": "Save Recording",
+      "typeID": 16,
+      "isEditable": 0
+    },
+    {
+      "id": 58,
+      "commandName": "Delete FlikPro Video",
+      "typeID": 17,
+      "isEditable": 0
+    },
+    {
+      "id": 59,
+      "commandName": "Delete Video",
+      "typeID": 17,
+      "isEditable": 0
+    },
+    {
+      "id": 60,
+      "commandName": "Delete FlikPro Recording",
+      "typeID": 17,
+      "isEditable": 0
+    },
+    {
+      "id": 61,
+      "commandName": "Delete Recording",
+      "typeID": 17,
+      "isEditable": 0
+    },
+    {
+      "id": 62,
+      "commandName": "Home",
+      "typeID": 7,
+      "isEditable": 0
+    },
+    {
+      "id": 63,
+      "commandName": "Open Home",
+      "typeID": 7,
+      "isEditable": 0
+    },
+    {
+      "id": 64,
+      "commandName": "Home",
+      "typeID": 15,
+      "isEditable": 0
+    },
+    {
+      "id": 65,
+      "commandName": "Open Home",
+      "typeID": 15,
+      "isEditable": 0
+    },
+    {
+      "id": 66,
+      "commandName": "Switch",
+      "typeID": 6,
+      "isEditable": 0
+    },
+    {
+      "id": 67,
+      "commandName": "Change",
+      "typeID": 6,
+      "isEditable": 0
+    },
+    {
+      "id": 68,
+      "commandName": "Front",
+      "typeID": 6,
+      "isEditable": 0
+    },
+    {
+      "id": 69,
+      "commandName": "Back",
+      "typeID": 6,
+      "isEditable": 0
+    },
+    {
+      "id": 70,
+      "commandName": "Switch",
+      "typeID": 14,
+      "isEditable": 0
+    },
+    {
+      "id": 71,
+      "commandName": "Change",
+      "typeID": 14,
+      "isEditable": 0
+    },
+    {
+      "id": 72,
+      "commandName": "Front",
+      "typeID": 14,
+      "isEditable": 0
+    },
+    {
+      "id": 73,
+      "commandName": "Back",
+      "typeID": 14,
+      "isEditable": 0
+    },
+    {
+      "id": 74,
+      "commandName": "Back",
+      "typeID": 15,
+      "isEditable": 0
+    },
+    {
+      "id": 75,
+      "commandName": "Back",
+      "typeID": 15,
+      "isEditable": 0
+    }
+  ]
+}
