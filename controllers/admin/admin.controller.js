@@ -333,7 +333,7 @@ exports.deleteUser = async (req, res) => {
           return;
         } else {
            //add activity
-           let activity = `Admin with email ${req.session.user?.name} has deleted the account of user with email ${data1.name}`           
+           let activity = `Admin with email ${req.session.user?.email} has deleted the account of user with email ${data1.email}`           
            let newActivity = {
              adminId: req.session.user?.id,
              activity: activity,
