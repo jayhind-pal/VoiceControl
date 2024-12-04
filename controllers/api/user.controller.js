@@ -30,23 +30,24 @@ exports.login = async (req, res) => {
           // add activity
           User.findByEmail(req.body.email, async (err, data1) => {
             if (err) {
-              res.status(500).send({
+              return res.status(500).send({
                 message: trans.lang("message.data_not_found"),
               });
-            } else {
-              let activity = `User with email ${req.body.email} has logged in to the app`;
-              let newActivity = {
-                activity: activity,
-                email: req.body.email,
-              };
-              Activity.create(new Activity(newActivity), async (err, data) => {
-                if (err) {
-                  // res.send("error while generating logs");
-                  // return;
-                }
-              });
             }
-            res.status(200).json(data);
+            // else {
+            //   let activity = `User with email ${req.body.email} has logged in to the app`;
+            //   let newActivity = {
+            //     activity: activity,
+            //     email: req.body.email,
+            //   };
+            //   Activity.create(new Activity(newActivity), async (err, data) => {
+            //     if (err) {
+            //       // res.send("error while generating logs");
+            //       // return;
+            //     }
+            //   });
+            // }
+            return res.status(200).json(data);
           });
         } else {
           res.status(404).send({
@@ -129,17 +130,17 @@ exports.signup = async (req, res) => {
                 }
               );
               //add activity
-              let activity = `User with email ${req.body.email} registered himself into the system`;
-              let newActivity = {
-                activity: activity,
-                email: req.body.email,
-              };
-              Activity.create(new Activity(newActivity), async (err, data) => {
-                if (err) {
-                  // res.send("error while generating logs");
-                  // return;
-                }
-              });
+              // let activity = `User with email ${req.body.email} registered himself into the system`;
+              // let newActivity = {
+              //   activity: activity,
+              //   email: req.body.email,
+              // };
+              // Activity.create(new Activity(newActivity), async (err, data) => {
+              //   if (err) {
+              //     // res.send("error while generating logs");
+              //     // return;
+              //   }
+              // });
             } catch (err) {}
             res.send(newUser);
           }
@@ -292,17 +293,17 @@ exports.resetPasswordSubmit = async (req, res) => {
             trans.lang("message.something_went_wrong")
         );
       } else {
-        let activity = `User with email ${req.body.email} has reset his password`;
-        let newActivity = {
-          activity: activity,
-          email: req.body.email,
-        };
-        Activity.create(new Activity(newActivity), async (err, data) => {
-          if (err) {
-            // res.send("error while generating logs");
-            // return;
-          }
-        });
+        // let activity = `User with email ${req.body.email} has reset his password`;
+        // let newActivity = {
+        //   activity: activity,
+        //   email: req.body.email,
+        // };
+        // Activity.create(new Activity(newActivity), async (err, data) => {
+        //   if (err) {
+        //     // res.send("error while generating logs");
+        //     // return;
+        //   }
+        // });
         emailVerification.delete(req.body.evid, (err, data) => {});
         res.redirect("/api/success");
       }
