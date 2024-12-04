@@ -1,11 +1,11 @@
 const User = require("./../../models/user.model.js");
 const emailVerification = require("./../../models/email_verification.model.js");
-const jwt = require('jsonwebtoken');
-const bcrypt = require('bcrypt');
-const ejs = require('ejs');
-const Mailer = require('./../../helpers/MailHelper');
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
+const ejs = require("ejs");
+const Mailer = require("./../../helpers/MailHelper");
 const mailer = new Mailer();
-const Activity = require("./../../models/activity.model.js")
+const Activity = require("./../../models/activity.model.js");
 
 exports.login = async (req, res) => {
   User.login(req.body.email, async (err, data) => {
@@ -13,31 +13,32 @@ exports.login = async (req, res) => {
       if (err) {
         if (err.kind === "not_found") {
           res.status(404).send({
-            message: trans.lang('message.user.invalid_credentials')
+            message: trans.lang("message.user.invalid_credentials"),
           });
         } else {
           res.status(500).send({
             error: err,
-            message: trans.lang('message.something_went_wrong')
+            message: trans.lang("message.something_went_wrong"),
           });
         }
       } else {
-        let passwordMatched = await bcrypt.compare(req.body.password, data.password);
+        let passwordMatched = await bcrypt.compare(
+          req.body.password,
+          data.password
+        );
         if (data && passwordMatched) {
-          // add activity          
+          // add activity
           User.findByEmail(req.body.email, async (err, data1) => {
             if (err) {
               res.status(500).send({
-                message: trans.lang('message.data_not_found')
+                message: trans.lang("message.data_not_found"),
               });
-            }
-            else{
-              
-              let activity = `User with email ${req.body.email} has logged in to the app`
+            } else {
+              let activity = `User with email ${req.body.email} has logged in to the app`;
               let newActivity = {
                 activity: activity,
-                email: req.body.email
-              }
+                email: req.body.email,
+              };
               Activity.create(new Activity(newActivity), async (err, data) => {
                 if (err) {
                   // res.send("error while generating logs");
@@ -46,18 +47,17 @@ exports.login = async (req, res) => {
               });
             }
             res.status(200).json(data);
-        })
-
+          });
         } else {
           res.status(404).send({
-            message: trans.lang('message.user.invalid_credentials')
+            message: trans.lang("message.user.invalid_credentials"),
           });
         }
       }
     } catch (err) {
       res.status(500).send({
         error: err,
-        message: trans.lang('message.something_went_wrong')
+        message: trans.lang("message.something_went_wrong"),
       });
     }
   });
@@ -67,7 +67,7 @@ exports.signup = async (req, res) => {
   // Validate request
   if (!req.body) {
     res.status(400).send({
-      message: trans.lang('message.required')
+      message: trans.lang("message.required"),
     });
     return;
   }
@@ -92,51 +92,67 @@ exports.signup = async (req, res) => {
             res.status(500).send({
               error: err,
               message:
-                err.message || trans.lang('message.something_went_wrong')
+                err.message || trans.lang("message.something_went_wrong"),
             });
           } else {
             try {
-                emailVerification.create({ user_id: newUser.id, email: newUser.email }, async (err, evdata) => {
-                if (!err) {
-                  const resetLink = base_url + 'api/reset-password?evid=' + evdata.id + '&uid=' + newUser.id + "&email=" + newUser.email;
-                  const html = await ejs.renderFile('./views/mails/email_verification.ejs', {
-                    user: req.body,
-                    resetLink
-                  });
-                  mailer.send(req.body.email, `Welcome to ${global.appname}! Confirm Your Email & Set Up Your Account`, html);
+              emailVerification.create(
+                { user_id: newUser.id, email: newUser.email },
+                async (err, evdata) => {
+                  if (!err) {
+                    const resetLink =
+                      base_url +
+                      "api/reset-password?evid=" +
+                      evdata.id +
+                      "&uid=" +
+                      newUser.id +
+                      "&email=" +
+                      newUser.email;
+                    const html = await ejs.renderFile(
+                      "./views/mails/email_verification.ejs",
+                      {
+                        user: req.body,
+                        resetLink,
+                      }
+                    );
+                    mailer.send(
+                      req.body.email,
+                      `Welcome to ${global.appname}! Confirm Your Email & Set Up Your Account`,
+                      html
+                    );
+                  } else {
+                    res.status(500).send({
+                      error: err,
+                      message: trans.lang("message.something_went_wrong"),
+                    });
+                  }
                 }
-                else{
-                res.status(500).send({
-                  error: err,
-                  message: trans.lang('message.something_went_wrong')
-                });
-                }
-              });
-              //add activity              
-              let activity = `User with email ${req.body.email} registered himself into the system`
+              );
+              //add activity
+              let activity = `User with email ${req.body.email} registered himself into the system`;
               let newActivity = {
                 activity: activity,
-                email: req.body.email
-              }
+                email: req.body.email,
+              };
               Activity.create(new Activity(newActivity), async (err, data) => {
                 if (err) {
                   // res.send("error while generating logs");
                   // return;
                 }
               });
-            } catch (err) { }
+            } catch (err) {}
             res.send(newUser);
           }
         });
       } else {
         res.status(500).send({
           error: err,
-          message: trans.lang('message.something_went_wrong')
+          message: trans.lang("message.something_went_wrong"),
         });
       }
     } else {
       res.status(500).send({
-        message: trans.lang('message.email_already_exists')
+        message: trans.lang("message.email_already_exists"),
       });
     }
   });
@@ -146,73 +162,118 @@ exports.forgotPassword = async (req, res) => {
   // Validate Request
   if (!req.body.email) {
     res.status(400).send({
-      message: trans.lang('message.required')
+      message: trans.lang("message.required"),
     });
   }
   User.findByEmail(req.body.email, async (err, data) => {
     if (err) {
       if (err.kind === "not_found") {
         res.status(404).send({
-          message: trans.lang('message.data_not_found')
+          message: trans.lang("message.data_not_found"),
         });
       } else {
         res.status(500).send({
           error: err,
-          message: trans.lang('message.something_went_wrong')
+          message: trans.lang("message.something_went_wrong"),
         });
       }
     } else {
-      emailVerification.create({ user_id: data.id, email: data.email }, async (err, evdata) => {
-        if (!err) {
-          const resetLink = base_url + 'api/reset-password?evid=' + evdata.id + '&uid=' + data.id + "&email=" + data.email;
-          const html = await ejs.renderFile('./views/mails/email_verification.ejs', {
-            user: req.body,
-            resetLink
-          });
-          mailer.send(req.body.email, `Welcome to ${global.appname}! Confirm Your Email & Set Up Your Account`, html);
-          res.send({ message: "We have sent a Reset password link to your email - " + req.body.email, resetLink });
-          return;
-        }
+      emailVerification.create(
+        { user_id: data.id, email: data.email },
+        async (err, evdata) => {
+          if (!err) {
+            const resetLink =
+              base_url +
+              "api/reset-password?evid=" +
+              evdata.id +
+              "&uid=" +
+              data.id +
+              "&email=" +
+              data.email;
+            const html = await ejs.renderFile(
+              "./views/mails/email_verification.ejs",
+              {
+                user: req.body,
+                resetLink,
+              }
+            );
+            mailer.send(
+              req.body.email,
+              `Welcome to ${global.appname}! Confirm Your Email & Set Up Your Account`,
+              html
+            );
+            res.send({
+              message:
+                "We have sent a Reset password link to your email - " +
+                req.body.email,
+              resetLink,
+            });
+            return;
+          }
 
-        res.status(500).send({
-          error: err,
-          message: trans.lang('message.something_went_wrong')
-        });
-      });
+          res.status(500).send({
+            error: err,
+            message: trans.lang("message.something_went_wrong"),
+          });
+        }
+      );
     }
   });
 };
 exports.resetPassword = (req, res) => {
   // Validate Request
   if (!req.query) {
-    res.redirect(base_url + 'page-not-found');
+    res.redirect(base_url + "page-not-found");
     return;
   }
 
-  emailVerification.findRecord(req.query.evid, req.query.uid, req.query.email, (err, data) => {
-    if (err) {
-      res.redirect(base_url + 'page-not-found');
-      return;
-    }
+  emailVerification.findRecord(
+    req.query.evid,
+    req.query.uid,
+    req.query.email,
+    (err, data) => {
+      if (err) {
+        res.redirect(base_url + "page-not-found");
+        return;
+      }
 
-    res.render('resetPassword.ejs', {
-      appName: global.appname,
-      query: req.query
-    });
-  });
+      res.render("resetPassword.ejs", {
+        appName: global.appname,
+        query: req.query,
+      });
+    }
+  );
 };
 exports.resetPasswordSubmit = async (req, res) => {
   User.findByEmail(req.body.email, async (err, data) => {
     if (err) {
       if (err.kind !== "not_found") {
-        res.redirect('/api/reset-password?evid=' + req.body.evid + '&uid=' + req.body.uid + "&email=" + req.body.email + '&error=' + trans.lang('message.something_went_wrong'));
+        res.redirect(
+          "/api/reset-password?evid=" +
+            req.body.evid +
+            "&uid=" +
+            req.body.uid +
+            "&email=" +
+            req.body.email +
+            "&error=" +
+            trans.lang("message.something_went_wrong")
+        );
         return;
       }
     }
 
     // confirm password
     if (req.body.password !== req.body.confirm_password) {
-      res.redirect('/api/reset-password?evid=' + req.body.evid + '&uid=' + req.body.uid + "&email=" + req.body.email + '&error=' + trans.lang('message.password_not_matched'));
+      res.redirect(
+        "/api/reset-password?evid=" +
+          req.body.evid +
+          "&uid=" +
+          req.body.uid +
+          "&email=" +
+          req.body.email +
+          "&error=" +
+          trans.lang("message.password_not_matched")
+      );
       return;
     }
 
@@ -220,28 +281,36 @@ exports.resetPasswordSubmit = async (req, res) => {
     let record = { password: await bcrypt.hash(req.body.password, 10) };
     User.updateById(data.id, new User(record), async (err, data) => {
       if (err) {
-        res.redirect('/api/reset-password?evid=' + req.body.evid + '&uid=' + req.body.uid + "&email=" + req.body.email + '&error=' + trans.lang('message.something_went_wrong'));
+        res.redirect(
+          "/api/reset-password?evid=" +
+            req.body.evid +
+            "&uid=" +
+            req.body.uid +
+            "&email=" +
+            req.body.email +
+            "&error=" +
+            trans.lang("message.something_went_wrong")
+        );
       } else {
-        
-        let activity = `User with email ${req.body.email} has reset his password`
+        let activity = `User with email ${req.body.email} has reset his password`;
         let newActivity = {
           activity: activity,
-          email: req.body.email
-        }
+          email: req.body.email,
+        };
         Activity.create(new Activity(newActivity), async (err, data) => {
           if (err) {
             // res.send("error while generating logs");
             // return;
           }
         });
-        emailVerification.delete(req.body.evid, (err, data) => { });
-        res.redirect('/api/success');
+        emailVerification.delete(req.body.evid, (err, data) => {});
+        res.redirect("/api/success");
       }
     });
   });
 };
 exports.success = (req, res) => {
-  res.render('success.ejs', {
+  res.render("success.ejs", {
     appname: global.appname,
   });
 };
