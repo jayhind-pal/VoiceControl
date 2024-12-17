@@ -115,6 +115,7 @@
                                                 <th>DOB</th>
                                                 <th>Email</th>
                                                 <th>Zipcode</th>
+                                                <th>CreatedAt</th>
                                                 <th>Update</th>
                                                 <th>Delete</th>
                                                 <th>Activity</th>
@@ -129,6 +130,7 @@
                                                 <td><%= formatDate(users[i].dob) %></td>
                                                 <td><%= users[i].email %></td>
                                                 <td><%= users[i].zipcode %></td>
+                                                <td><%= formatDateTime(users[i].entrydt) %></td>
                                                 <td>
                                                     <a href="?page=form&id=<%= users[i].id %>" class="btn btn-primary">
                                                         <i class="fa fa-pencil"></i>
@@ -193,6 +195,39 @@
         // Return the formatted date as "dd mm yyyy"
         return `${formattedDay}/${formattedMonth}/${year}`;
       } %>
+
+      <% 
+        function formatDateTime(inputDate) {
+            // Convert the date to US timezone (e.g., New York timezone)
+            const options = {
+              timeZone: 'America/New_York', // US timezone
+              year: 'numeric',
+              month: '2-digit',
+              day: '2-digit',
+              hour: '2-digit',
+              minute: '2-digit',
+              hour12: false, // Use 24-hour format
+            };
+            
+            // Format the date
+            const formatter = new Intl.DateTimeFormat('en-US', options);
+            const formattedParts = formatter.formatToParts(inputDate);
+            
+            // Extract and combine parts
+            const datePart = `${formattedParts.find(part => part.type === 'month').value}/${
+              formattedParts.find(part => part.type === 'day').value
+            }/${
+              formattedParts.find(part => part.type === 'year').value
+            }`;
+            const timePart = `${formattedParts.find(part => part.type === 'hour').value}:${
+              formattedParts.find(part => part.type === 'minute').value
+            }`;
+            
+            // Final formatted result
+            const formattedDate = `${datePart} ${timePart}`;
+            return formattedDate;
+        }
+      %>
 
     <!-- INCLUDE PAGE FOOTER -->
     <%- include('includes/footer.ejs') %>

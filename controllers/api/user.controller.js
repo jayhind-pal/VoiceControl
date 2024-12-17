@@ -112,6 +112,7 @@ exports.signup = async (req, res) => {
                       "./views/mails/email_verification.ejs",
                       {
                         user: req.body,
+                        name: req.body.name,
                         resetLink,
                       }
                     );
@@ -194,6 +195,7 @@ exports.forgotPassword = async (req, res) => {
               "./views/mails/email_verification.ejs",
               {
                 user: req.body,
+                name: data.name,
                 resetLink,
               }
             );
