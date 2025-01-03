@@ -198,34 +198,22 @@
 
       <% 
         function formatDateTime(inputDate) {
-            // Convert the date to US timezone (e.g., New York timezone)
-            const options = {
-              timeZone: 'America/New_York', // US timezone
-              year: 'numeric',
-              month: '2-digit',
-              day: '2-digit',
-              hour: '2-digit',
-              minute: '2-digit',
-              hour12: false, // Use 24-hour format
-            };
+            // Define month names
+             const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", 
+                  "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  
+            const day = inputDate.getDate();
+            const month = months[inputDate.getMonth()];
+            const year = inputDate.getFullYear();
             
-            // Format the date
-            const formatter = new Intl.DateTimeFormat('en-US', options);
-            const formattedParts = formatter.formatToParts(inputDate);
+            // Format hours and minutes with AM/PM
+            let hours = inputDate.getHours();
+            const minutes = inputDate.getMinutes().toString().padStart(2, '0');
+            const ampm = hours >= 12 ? 'PM' : 'AM';
+            hours = hours % 12 || 12; // Convert 24-hour time to 12-hour
             
-            // Extract and combine parts
-            const datePart = `${formattedParts.find(part => part.type === 'month').value}/${
-              formattedParts.find(part => part.type === 'day').value
-            }/${
-              formattedParts.find(part => part.type === 'year').value
-            }`;
-            const timePart = `${formattedParts.find(part => part.type === 'hour').value}:${
-              formattedParts.find(part => part.type === 'minute').value
-            }`;
-            
-            // Final formatted result
-            const formattedDate = `${datePart} ${timePart}`;
-            return formattedDate;
+            // Combine parts into the desired format
+            return `${month} ${day} ${year}, ${hours}:${minutes} ${ampm}`;
         }
       %>
 

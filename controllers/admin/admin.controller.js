@@ -128,7 +128,7 @@ exports.admins = (req, res) => {
       let selected = req.query.id;
 
       const admin = data.find((item) => item.id === parseInt(selected));
-      console.log("data", data);
+      // console.log("data", data);
       res.render("admins.ejs", {
         appName: global.appname,
         user: req.session.user,
@@ -165,6 +165,7 @@ exports.activity = (req, res) => {
 };
 // Create and Save a new Tutorial
 exports.adminSubmit = async (req, res) => {
+  console.log('req.body', req.body)
   if (req.body.name && req.body.email) {
     Admin.findByEmail(req.body.email, async (err, data1) => {
       if (err) {

@@ -22,6 +22,7 @@ const verifyToken = (req, res, next) => {
     const decoded = jwt.verify(token, config.TOKEN_KEY);
     req.user = decoded;
     req.user.token = token;
+    res.locals.user = req.user || null;
   } catch (err) {
     return res.status(404).send({
         message: trans.lang('message.auth_fail')
